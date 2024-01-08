@@ -4,7 +4,7 @@ metadata:
   name: ci-pipeline
   namespace: vadym
 spec:
-  params:
-  taks:
+  params: []
+  taks: []
   workspaces:
     - name: shared-workspace
