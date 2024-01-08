@@ -12,7 +12,7 @@ spec:
       type: string
       default: '""'
     - default: ""
-      name: is-source-directory
+      name: app-directory
       type: string
   tasks:
     - name: clone-app-repo
