@@ -7,7 +7,7 @@ spec:
   params:
     - name: app-repo-url
       type: string
-      default: https://github.com/vadimdez/ace-customer-details.git
+      default: https://github.com/VadimDez/apps-ab.git
     - name: app-repo-private-key
       type: string
       default: '""'
