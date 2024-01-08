@@ -5,7 +5,7 @@ metadata:
   namespace: vadym
 spec:
   params:
-    - name: apps-repo-url
+    - name: app-repo-url
       type: string
       default: https://github.com/vadimdez/ace-customer-details.git
     - name: app-repo-private-key
