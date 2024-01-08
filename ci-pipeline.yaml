@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: ci-pipeline
+  namespace: vadym
+spec:
+  params:
+    - name: apps-repo-url
+      type: string
+      default: https://github.com/vadimdez/ace-customer-details.git
+    - name: app-repo-private-key
+      type: string
+      default: '""'
+  tasks:
+    - name: clone-app-repo
+      params:
+        - name: url
+          value: $(params.app-repo-url)
+        - name: subdirectory
+          value: $(params.app-directory)
+        - name: deleteExisting
+          value: "true"
+        - name: sshPrivateKey
+          value: $(params.app-repo-private-key)
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+  workspaces:
+    - name: shared-workspace
