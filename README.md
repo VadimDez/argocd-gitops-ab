@@ -37,3 +37,9 @@ Add line to the `ServiceAccounts -> pipeline` to secrets and imagePullSecrets:
 ```
   - name: ibm-entitlement-key
 ```
+
+### Password for ACE UI
+
+Porject = `ibm-common-services`
+
+Secrets -> integration-admin-initial-temporary-credentials
