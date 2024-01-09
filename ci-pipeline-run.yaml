@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: ci-pipeline-
+  namespace: vadym
+spec:
+  pipelineRef:
+    name: ci-pipeline
+  serviceAccountName: pipeline
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+    - name: app-repo-secret
+      secret:
+        secretName: gh-apps-ssh-key
