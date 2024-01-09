@@ -31,3 +31,9 @@ stringData:
   known_hosts: github.com
 
 ```
+
+Add line to the `ServiceAccounts -> pipeline` to secrets and imagePullSecrets:
+
+```
+  - name: ibm-entitlement-key
+```

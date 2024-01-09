@@ -1,0 +1,8 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: cd-pipeline
+  namespace: vadym
+spec:
+  workspaces:
+    - name: shared-workspace
