@@ -7,7 +7,7 @@ spec:
   designerFlowsOperationMode: disabled
   license:
     accept: true
-    license: L-UTKS-P46KK2
+    license: L-UAZF-8ZYQDD
     use: AppConnectEnterpriseNonProductionFREE
   replicas: 1
   router:
