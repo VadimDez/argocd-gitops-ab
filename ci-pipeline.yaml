@@ -7,14 +7,27 @@ spec:
   params:
     - name: app-repo-url
       type: string
-      default: https://github.com/VadimDez/apps-ab.git
+      default: git@github.com:VadimDez/apps-ab.git
+      description: "SSH url of ACE source repository, ex: git@github.com:ace-prod-ref/create-customer.git"
+
+    - name: is-infra-repo-url
+      type: string
+      default: git@github.com:VadimDez/ace-infra.git
+      description: "SSH url of Infrastructure repository, ex: git@github.com:ace-prod-ref/ace-infra.git"
+
     - name: app-repo-private-key
       type: string
       default: '""'
 
+    - name: ace-base-image
+      type: string
+      default: cp.icr.io/cp/appc/ace-server-prod@sha256:1753d66293e51d8453acceb5194a8816fd9010caec7c770d07e6623b10fd3976
+      description: "Base image for App Connect Interprise."
+
   workspaces:
     - name: shared-workspace
     - name: app-repo-secret
+    - name: infra-repo-secret
 
   tasks:
     - name: clone-app-repo
@@ -33,6 +46,23 @@ spec:
           workspace: shared-workspace
         - name: app-repo-secret
           workspace: app-repo-secret
+
+    - name: clone-is-infra-repo
+      params:
+        - name: url
+          value: $(params.is-infra-repo-url)
+        - name: subdirectory
+          value: is-infra
+        - name: deleteExisting
+          value: "true"
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+        - name: ssh-directory
+          workspace: ace-infra-repo-secret
 
     - name: resolve-props
       params:
@@ -62,4 +92,26 @@ spec:
         name: build-bar
       workspaces:
         - name: workspace
+          workspace: shared-workspace
+
+    - name: build-is-image
+      params:
+        - name: BUILD_EXTRA_ARGS
+          value: --build-arg BASE=$(params.ace-base-image)
+        - name: TLSVERIFY
+          value: "false"
+        - name: IMAGE
+          value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)/$(tasks.resolve-props.results.is-release-name):$(tasks.clone-is-source-repo.results.commit)
+        - name: DOCKERFILE
+          value: $(workspaces.source.path)/is-infra/Dockerfile
+        - name: CONTEXT
+          value: $(workspaces.source.path)/bars
+      runAfter:
+        - clone-is-infra-repo
+        - build-bar
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
           workspace: shared-workspace
