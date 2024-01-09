@@ -1,0 +1,72 @@
+kind: Task
+apiVersion: tekton.dev/v1beta1
+metadata:
+  name: build-integration-server
+spec:
+  params:
+    - name: is_manifest_template
+      type: string
+    - name: destination_is_manifest
+      type: string
+    - name: configurations
+      type: string
+    - name: name
+      type: string
+    - name: license
+      type: string
+    - name: license-use
+      type: string
+    - name: service-endpoint-type
+      type: string
+    - name: image
+      type: string
+    - name: version
+      type: string
+    - name: user-home
+      type: string
+    - name: branch_name
+      type: string
+  workspaces:
+    - name: input
+    - name: ssh-directory
+  steps:
+    - name: create-custom-resource
+      image: image-registry.openshift-image-registry.svc:5000/ci/sh-tools
+      workingDir: $(workspaces.input.path)
+      env:
+        - name: IS_MANIFEST_TEMPLATE
+          value: $(params.is_manifest_template)
+        - name: DESTINATION_IS_MANIFEST
+          value: $(params.destination_is_manifest)
+        - name: CONFIGURATIONS
+          value: $(params.configurations)z
+        - name: NAME
+          value: $(params.name)
+        - name: LICENSE
+          value: $(params.license)
+        - name: LICENSE_USE
+          value: $(params.license-use)
+        - name: SERVICE_ENDPOINT_TYPE
+          value: $(params.service-endpoint-type)
+        - name: IMAGE
+          value: $(params.image)
+        - name: CONFIGURATIONS
+          value: $(params.configurations)
+        - name: VERSION
+          value: $(params.version)
+      script: |
+        #!/usr/bin/env bash
+
+        function create_integration_server() {
+          envsubst < ${IS_MANIFEST_TEMPLATE} > ${DESTINATION_IS_MANIFEST}
+
+          for configuration in ${CONFIGURATIONS} ; do
+            config=$configuration yq e -i '.spec.configurations = (.spec.configurations // []) + env(config)' ${DESTINATION_IS_MANIFEST}
+          done
+        }
+
+        if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+          create_integration_server
+        fi
+
+        cat $DESTINATION_IS_MANIFEST

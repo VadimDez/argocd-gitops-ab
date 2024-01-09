@@ -115,3 +115,36 @@ spec:
       workspaces:
         - name: source
           workspace: shared-workspace
+
+    - name: build-integration-server
+      params:
+        - name: is_manifest_template
+          value: "$(workspaces.input.path)/is-infra/IntegrationServer.yaml"
+        - name: destination_is_manifest
+          value: "$(workspaces.input.path)/integrationServer-$(tasks.resolve-props.results.is-release-name).yaml"
+        - name: configurations
+          value: $(tasks.resolve-props.results.is-configurations)
+        - name: name
+          value: $(tasks.resolve-props.results.is-release-name)
+        - name: license
+          value: $(tasks.resolve-props.results.is-license)
+        - name: license-use
+          value: $(tasks.resolve-props.results.is-license-use)
+        - name: service-endpoint-type
+          value: $(tasks.resolve-props.results.is-service-endpoint-type)
+        - name: image
+          value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)/$(tasks.resolve-props.results.is-release-name):$(tasks.clone-is-source-repo.results.commit)
+        - name: version
+          value: $(tasks.resolve-props.results.is-version)
+        - name: user-home
+          value: "/root"
+        - name: branch_name
+          value: $(context.pipeline.name)-$(context.pipelineRun.name)
+      runAfter:
+        - build-is-image
+      taskRef:
+        kind: Task
+        name: build-integration-server
+      workspaces:
+        - name: input
+          workspace: shared-workspace
