@@ -64,12 +64,10 @@ spec:
 
       taskRef:
         kind: Task
-        name: git-clone
+        name: nexus-upload
       workspaces:
-        - name: output
+        - name: workspace
           workspace: shared-workspace
-        - name: app-repo-secret
-          workspace: app-repo-secret
 
     - name: clone-app-repo
       params:
