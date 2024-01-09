@@ -2,49 +2,35 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: resolve-props
-  namespace: vadym
 spec:
   params:
     - name: is-source-directory
-      type: string
   results:
-    - name: is-application-names
-      type: string
-    - name: release-name
-      type: string
+    - name: is-project
+    - name: is-application-name
+    - name: is-release-name
     - name: is-configuration-keystore
-      type: string
     - name: is-configuration-truststore
-      type: string
     - name: is-configuration-setdbparms
-      type: string
     - name: is-configuration-serverconf
-      type: string
     - name: is-configuration-policyproject
-      type: string
     - name: is-configuration-loopbackdatasource
-      type: string
     - name: mq-queue-name
-      type: string
     - name: mq-end-point-policy-file
-      type: string
     - name: registry-host
-      type: string
     - name: previous-is-genenration
-      type: string
     - name: previous-deployment-revision
-      type: string
     - name: endpoint-path
-      type: string
     - name: is-configurations
-      type: string
+    - name: is-license
+    - name: is-license-use
+    - name: is-service-endpoint-type
+    - name: is-version
+    - name: is-base-image
   steps:
-    - image: quay.io/hollisc/yq-zip
-      name: parse-source-properties
-      resources: {}
+    - name: parse-source-properties
+      image: mikefarah/yq:4.7.1
       script: |
-        #!/bin/bash
-
         set -ex
 
         properties_yaml_path=$(workspaces.input.path)/$(params.is-source-directory)/pipeline_properties.yaml
@@ -68,9 +54,10 @@ spec:
           echo -n `yq e "$exp // \"\" " $properties_yaml_path` > $result_path
         }
 
-        resolve_props '.integrationServer.applicationNames' $(results.is-application-names.path)
-        resolve_prop '.integrationServer.releaseName' $(results.release-name.path)
-
+        resolve_props '.integrationServer.project' $(results.is-project.path)
+        resolve_prop '.integrationServer.applicationName' $(results.is-application-name.path)
+        resolve_prop '.integrationServer.releaseName' $(results.is-release-name.path)
+        resolve_prop '.integrationServer.endpoint-path' $(results.endpoint-path.path)
         resolve_props '.integrationServer.configurations.keystore' $(results.is-configuration-keystore.path)
         resolve_props '.integrationServer.configurations.truststore' $(results.is-configuration-truststore.path)
         resolve_props '.integrationServer.configurations.setdbparms' $(results.is-configuration-setdbparms.path)
@@ -78,16 +65,22 @@ spec:
         resolve_props '.integrationServer.configurations.policyproject' $(results.is-configuration-policyproject.path)
         resolve_props '.integrationServer.configurations.loopbackdatasource' $(results.is-configuration-loopbackdatasource.path)
 
-        resolve_props '.integrationServer.configurations.*' $(results.is-configurations.path)
-
         resolve_prop '.mq.queueName' $(results.mq-queue-name.path)
         resolve_prop '.mq.endPointPolicyFile' $(results.mq-end-point-policy-file.path)
-    - image: quay.io/openshift/origin-cli:latest
-      name: resolve-ocp-properties
-      resources: {}
-      script: |2
 
-        release_name=$(cat $(results.release-name.path))
+        resolve_props '.integrationServer.configurations.*' $(results.is-configurations.path)
+
+        resolve_prop '.integrationServer.license.license' $(results.is-license.path)
+        resolve_prop '.integrationServer.license.use' $(results.is-license-use.path)
+        resolve_prop '.integrationServer.service.endpointType' $(results.is-service-endpoint-type.path)
+        resolve_prop '.integrationServer.version' $(results.is-version.path)
+        resolve_prop '.integrationServer.baseImage' $(results.is-base-image.path)
+
+    - name: resolve-ocp-properties
+      image: quay.io/openshift/origin-cli:latest
+      script: |
+
+        release_name=$(cat $(results.is-release-name.path))
         echo $release_name
 
         set +e
@@ -106,5 +99,6 @@ spec:
         fi
 
         echo -n $(oc registry info) > $(results.registry-host.path)
+
   workspaces:
     - name: input
