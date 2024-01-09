@@ -1,21 +1,16 @@
 # Create ssh
 
-Modify `argocd-cm` ConfigMap:
+Modify `argocd` instance, add to `spec``:
 
 ```
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: argocd-cm
-data:
-  resource.exclusions: |
-    - apiGroups:
-      - "*"
-      kinds:
-      - "PipelineRun"
-      - "TaskRun"
-      clusters:
-      - "*"
+resourceExclusions: |
+  - apiGroups:
+    - tekton.dev
+    clusters:
+    - '*'
+    kinds:
+    - TaskRun
+    - PipelineRun
 ```
 
 ```

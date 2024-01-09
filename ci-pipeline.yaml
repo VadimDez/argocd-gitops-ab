@@ -29,7 +29,7 @@ spec:
       workspaces:
         - name: output
           workspace: shared-workspace
-        - name: ssh-directory
+        - name: app-repo-secret
           workspace: app-repo-secret
   workspaces:
     - name: shared-workspace
