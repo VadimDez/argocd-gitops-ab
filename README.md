@@ -1,5 +1,23 @@
 # Create ssh
 
+Modify `argocd-cm` ConfigMap:
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  resource.exclusions: |
+    - apiGroups:
+      - "*"
+      kinds:
+      - "PipelineRun"
+      - "TaskRun"
+      clusters:
+      - "*"
+```
+
 ```
 apiVersion: v1
 kind: Secret
