@@ -46,3 +46,20 @@ spec:
       workspaces:
         - name: input
           workspace: shared-workspace
+
+    - name: build-bar
+      params:
+        - name: is-source-directory
+          value: is-source
+        - name: is-application-name
+          value: $(tasks.resolve-props.results.is-application-name)
+        - name: is-project
+          value: $(tasks.resolve-props.results.is-project)
+      runAfter:
+        - resolve-props
+      taskRef:
+        kind: Task
+        name: build-bar
+      workspaces:
+        - name: workspace
+          workspace: shared-workspace
