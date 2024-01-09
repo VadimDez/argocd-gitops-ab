@@ -11,9 +11,6 @@ spec:
     - name: app-repo-private-key
       type: string
       default: '""'
-    - default: ""
-      name: app-directory
-      type: string
 
   workspaces:
     - name: shared-workspace
@@ -25,7 +22,7 @@ spec:
         - name: url
           value: $(params.app-repo-url)
         - name: subdirectory
-          value: $(params.app-directory)
+          value: is-source
         - name: deleteExisting
           value: "true"
       taskRef:
@@ -36,3 +33,16 @@ spec:
           workspace: shared-workspace
         - name: app-repo-secret
           workspace: app-repo-secret
+
+    - name: resolve-props
+      params:
+        - name: is-source-directory
+          value: is-source
+      runAfter:
+        - clone-app-repo
+      taskRef:
+        kind: Task
+        name: resolve-props
+      workspaces:
+        - name: input
+          workspace: shared-workspace
