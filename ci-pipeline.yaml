@@ -133,7 +133,7 @@ spec:
         - name: service-endpoint-type
           value: $(tasks.resolve-props.results.is-service-endpoint-type)
         - name: image
-          value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)/$(tasks.resolve-props.results.is-release-name):$(tasks.clone-is-source-repo.results.commit)
+          value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)/$(tasks.resolve-props.results.is-release-name):$(tasks.clone-app-repo.results.commit)
         - name: version
           value: $(tasks.resolve-props.results.is-version)
         - name: user-home
