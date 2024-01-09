@@ -23,13 +23,14 @@ spec:
           value: $(params.app-directory)
         - name: deleteExisting
           value: "true"
-        - name: sshPrivateKey
-          value: $(params.app-repo-private-key)
       taskRef:
         kind: Task
         name: git-clone
       workspaces:
         - name: output
           workspace: shared-workspace
+        - name: ssh-directory
+          workspace: app-repo-secret
   workspaces:
     - name: shared-workspace
+    - name: app-repo-secret
