@@ -1,21 +1,22 @@
-apiVersion: tekton.dev/v1beta1
-kind: PipelineRun
+apiVersion: triggers.tekton.dev/v1
+kind: TriggerTemplate
 metadata:
-  generateName: ci-pipeline-
-  namespace: vadym
+  name: ci-piipeline-template
 spec:
-  pipelineRef:
-    name: ci-pipeline
-  serviceAccountName: pipeline
-  workspaces:
-    - name: shared-workspace
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
-    - name: app-repo-secret
-      secret:
-        secretName: gh-apps-ssh-key
+  resourcetemplates:
+    - aapiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        generateName: ci-pipeline-run-
+        namespace: vadym
+      spec:
+        pipelineRef:
+          name: ci-pipeline
+        serviceAccountName: pipeline
+        workspaces:
+          - name: shared-workspace
+            persistentVolumeClaim:
+              claimName: tekton-workspace
+          - name: app-repo-secret
+            secret:
+              secretName: gh-apps-ssh-key
