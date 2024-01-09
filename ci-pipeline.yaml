@@ -14,6 +14,11 @@ spec:
     - default: ""
       name: app-directory
       type: string
+
+  workspaces:
+    - name: shared-workspace
+    - name: app-repo-secret
+
   tasks:
     - name: clone-app-repo
       params:
@@ -31,6 +36,3 @@ spec:
           workspace: shared-workspace
         - name: app-repo-secret
           workspace: app-repo-secret
-  workspaces:
-    - name: shared-workspace
-    - name: app-repo-secret
