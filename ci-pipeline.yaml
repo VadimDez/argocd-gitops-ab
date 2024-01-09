@@ -62,7 +62,7 @@ spec:
         - name: output
           workspace: shared-workspace
         - name: ssh-directory
-          workspace: ace-infra-repo-secret
+          workspace: infra-repo-secret
 
     - name: resolve-props
       params:
