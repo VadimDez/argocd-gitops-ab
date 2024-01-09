@@ -101,7 +101,7 @@ spec:
         - name: TLSVERIFY
           value: "false"
         - name: IMAGE
-          value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)/$(tasks.resolve-props.results.is-release-name):$(tasks.clone-is-source-repo.results.commit)
+          value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)/$(tasks.resolve-props.results.is-release-name):$(tasks.clone-app-repo.results.commit)
         - name: DOCKERFILE
           value: $(workspaces.source.path)/is-infra/Dockerfile
         - name: CONTEXT
