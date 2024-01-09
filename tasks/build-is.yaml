@@ -30,7 +30,7 @@ spec:
     - name: input
   steps:
     - name: create-custom-resource
-      image: image-registry.openshift-image-registry.svc:5000/ci/sh-tools
+      image: image-registry.openshift-image-registry.svc:5000/vadym/sh-tools
       workingDir: $(workspaces.input.path)
       env:
         - name: IS_MANIFEST_TEMPLATE
