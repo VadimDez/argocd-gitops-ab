@@ -1,10 +1,10 @@
-apiVersion: triggers.tekton.dev/v1
+apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
   name: ci-piipeline-template
 spec:
   resourcetemplates:
-    - aapiVersion: tekton.dev/v1
+    - aapiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
         generateName: ci-pipeline-run-
