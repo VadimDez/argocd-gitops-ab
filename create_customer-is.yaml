@@ -1,0 +1,27 @@
+apiVersion: appconnect.ibm.com/v1beta1
+kind: IntegrationServer
+metadata:
+  name: create-customer-details-rest
+  namespace: vadym
+spec:
+  designerFlowsOperationMode: disabled
+  license:
+    accept: true
+    license: L-UTKS-P46KK2
+    use: AppConnectEnterpriseNonProductionFREE
+  replicas: 1
+  router:
+    timeout: 120s
+  service:
+    endpointType: http
+  useCommonServices: true
+  version: 12.0.10.0-r1-lts
+  adminServerSecure: true
+  pod:
+    containers:
+      runtime:
+        image: image-registry.openshift-image-registry.svc:5000/vadym/create-customer-details-rest:9de15032b887d162ab2197a528a2f767ba27c788
+        imagePullPolicy: Always
+  configurations:
+    - create-customer-serverconf.yaml
+    - create-customer-policy
