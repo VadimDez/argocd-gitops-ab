@@ -7,12 +7,12 @@ spec:
   params:
     - name: app-repo-url
       type: string
-      default: git@github.com:VadimDez/apps-ab.git
+      default: https://github.com/VadimDez/apps-ab.git
       description: "SSH url of ACE source repository, ex: git@github.com:ace-prod-ref/create-customer.git"
 
     - name: is-infra-repo-url
       type: string
-      default: git@github.com:VadimDez/ace-infra.git
+      default: https://github.com/VadimDez/ace-infra.git
       description: "SSH url of Infrastructure repository, ex: git@github.com:ace-prod-ref/ace-infra.git"
 
     - name: app-repo-private-key
