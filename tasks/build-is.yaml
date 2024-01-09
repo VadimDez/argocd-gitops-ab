@@ -28,7 +28,6 @@ spec:
       type: string
   workspaces:
     - name: input
-    - name: ssh-directory
   steps:
     - name: create-custom-resource
       image: image-registry.openshift-image-registry.svc:5000/ci/sh-tools
