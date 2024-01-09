@@ -43,3 +43,15 @@ Add line to the `ServiceAccounts -> pipeline` to secrets and imagePullSecrets:
 Porject = `ibm-common-services`
 
 Secrets -> integration-admin-initial-temporary-credentials
+
+### Get Nexus password
+
+```
+oc exec <pod> -n vadym -- cat /nexus-data/admin.password
+```
+
+cyhxer-1pykPy-dypham
+
+```
+oc exec vadym-nexusrepo-sonatype-nexus-7f7c79dfc-8t5jc -n vadym -- cat /nexus-data/admin.password
+```

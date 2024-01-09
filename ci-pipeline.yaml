@@ -24,12 +24,53 @@ spec:
       default: cp.icr.io/cp/appc/ace-server-prod@sha256:1753d66293e51d8453acceb5194a8816fd9010caec7c770d07e6623b10fd3976
       description: "Base image for App Connect Interprise."
 
+    - name: nexus-user
+      description: User for Nexus
+      type: string
+    - name: nexus-password
+      description: Password for Nexus
+      type: string
+    - name: nexus-url
+      description: "Nexus Repository URL: http://domain only"
+      type: string
+      default: http://vadym-nexusrepo-sonatype-nexus-service.vadym.svc.cluster.local
+    - name: nexus-repo
+      description: "Nexus Folder"
+      default: vadym
+      type: string
+
   workspaces:
     - name: shared-workspace
     - name: app-repo-secret
     - name: infra-repo-secret
 
   tasks:
+    - name: nexus-upload
+      params:
+        - name: url
+          value: $(params.app-repo-url)
+        - name: subdirectory
+          value: is-source
+        - name: deleteExisting
+          value: "true"
+        - name: nexus-user
+          value: $(params.nexus-user)
+        - name: nexus-password
+          value: $(params.nexus-password)
+        - name: nexus-url
+          value: $(params.nexus-url)
+        - name: nexus-repo
+          value: $(params.nexus-repo)
+
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+        - name: app-repo-secret
+          workspace: app-repo-secret
+
     - name: clone-app-repo
       params:
         - name: url
