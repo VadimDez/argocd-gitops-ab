@@ -68,7 +68,7 @@ spec:
 
         for configuration in ${CONFIGURATIONS} ; do
           echo $configuration
-          curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${configuration}/*" "${NEXUS_URL}/repository/${NEXUS_REPO}/Configurations/${configuration}"
+          curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${configuration}" "${NEXUS_URL}/repository/${NEXUS_REPO}/Configurations/${configuration}"
         done
   workspaces:
     - name: workspace
