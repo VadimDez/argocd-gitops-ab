@@ -47,6 +47,7 @@ spec:
 
         mkdir CR01
         cd CR01
+        ls
         echo "BEFORE ==================================="
         # Loop through each file in the Nexus directory and download
         for file in $(curl -s -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -X GET "${NEXUS_URL}/repository/${NEXUS_REPO}/" | grep -o '"downloadUrl" *: *"[^"]*"' | sed 's/^.*: "\(.*\)".*$/\1/'); do
