@@ -27,6 +27,7 @@ spec:
     - name: nexus-user
       description: User for Nexus
       type: string
+      default: admin
     - name: nexus-password
       description: Password for Nexus
       type: string
@@ -80,6 +81,8 @@ spec:
       taskRef:
         kind: Task
         name: git-clone
+      runAfter:
+        - nexus-upload
       workspaces:
         - name: output
           workspace: shared-workspace
@@ -94,6 +97,8 @@ spec:
           value: is-infra
         - name: deleteExisting
           value: "true"
+      runAfter:
+        - nexus-upload
       taskRef:
         kind: ClusterTask
         name: git-clone
