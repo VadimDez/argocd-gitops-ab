@@ -50,7 +50,7 @@ spec:
         ls
         echo "BEFORE ==================================="
         # Loop through each file in the Nexus directory and download
-        for file in $(curl -s -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -X GET "${NEXUS_URL}/repository/${NEXUS_REPO}/" | grep -o '"downloadUrl" *: *"[^"]*"' | sed 's/^.*: "\(.*\)".*$/\1/'); do
+        for file in $(curl -s -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -X GET "${NEXUS_URL}/service/rest/v1/components/?repository=${NEXUS_REPO}" | grep -o '"downloadUrl" *: *"[^"]*"' | sed 's/^.*: "\(.*\)".*$/\1/'); do
             echo $file
             filename=$(basename "${file}")
             curl -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -O -J -L "${file}"
