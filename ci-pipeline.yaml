@@ -137,7 +137,7 @@ spec:
         - name: is_manifest_template
           value: "$(workspaces.input.path)/is-infra/IntegrationServer.yaml"
         - name: destination_is_manifest
-          value: "$(workspaces.input.path)/integrationServers/integrationServer-$(tasks.resolve-props.results.is-release-name).yaml"
+          value: "$(workspaces.input.path)/integrationServer-$(tasks.resolve-props.results.is-release-name).yaml"
         - name: configurations
           value: $(tasks.resolve-props.results.is-configurations)
         - name: name
