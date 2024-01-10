@@ -31,7 +31,7 @@ spec:
     - name: parse-source-properties
       image: mikefarah/yq:4.7.1
       script: |
-        ls
+        ls $(workspaces.input.path)
         set -ex
 
         properties_yaml_path=$(workspaces.input.path)/$(params.is-source-directory)/pipeline_properties.yaml
@@ -82,6 +82,7 @@ spec:
     - name: resolve-ocp-properties
       image: quay.io/openshift/origin-cli:latest
       script: |
+        ls $(workspaces.input.path)
 
         release_name=$(cat $(results.is-release-name.path))
         echo $release_name
