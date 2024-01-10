@@ -46,30 +46,6 @@ spec:
     - name: infra-repo-secret
 
   tasks:
-    - name: nexus-upload
-      params:
-        - name: url
-          value: $(params.app-repo-url)
-        - name: subdirectory
-          value: is-source
-        - name: deleteExisting
-          value: "true"
-        - name: nexus-user
-          value: $(params.nexus-user)
-        - name: nexus-password
-          value: $(params.nexus-password)
-        - name: nexus-url
-          value: $(params.nexus-url)
-        - name: nexus-repo
-          value: $(params.nexus-repo)
-
-      taskRef:
-        kind: Task
-        name: nexus-upload
-      workspaces:
-        - name: workspace
-          workspace: shared-workspace
-
     - name: clone-app-repo
       params:
         - name: url
@@ -81,8 +57,6 @@ spec:
       taskRef:
         kind: Task
         name: git-clone
-      runAfter:
-        - nexus-upload
       workspaces:
         - name: output
           workspace: shared-workspace
@@ -112,8 +86,6 @@ spec:
       params:
         - name: is-source-directory
           value: is-source
-      runAfter:
-        - clone-app-repo
       taskRef:
         kind: Task
         name: resolve-props
@@ -191,4 +163,30 @@ spec:
         name: build-integration-server
       workspaces:
         - name: input
+          workspace: shared-workspace
+
+    - name: nexus-upload
+      params:
+        - name: url
+          value: $(params.app-repo-url)
+        - name: subdirectory
+          value: is-source
+        - name: deleteExisting
+          value: "true"
+        - name: nexus-user
+          value: $(params.nexus-user)
+        - name: nexus-password
+          value: $(params.nexus-password)
+        - name: nexus-url
+          value: $(params.nexus-url)
+        - name: nexus-repo
+          value: $(params.nexus-repo)
+
+      taskRef:
+        kind: Task
+        name: nexus-upload
+      runAfter:
+        - build-integration-server
+      workspaces:
+        - name: workspace
           workspace: shared-workspace
