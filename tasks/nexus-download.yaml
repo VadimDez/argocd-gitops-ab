@@ -45,6 +45,7 @@ spec:
       script: |
         #!/bin/sh
 
+        rm -rf CR01
         mkdir CR01
         cd CR01
         ls
