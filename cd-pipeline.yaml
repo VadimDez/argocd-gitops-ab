@@ -46,8 +46,6 @@ spec:
       taskRef:
         kind: Task
         name: nexus-download
-      runAfter:
-        - build-integration-server
       workspaces:
         - name: workspace
           workspace: shared-workspace
