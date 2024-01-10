@@ -182,6 +182,8 @@ spec:
           value: $(tasks.resolve-props.results.is-configurations)
         - name: destination_is_manifest
           value: "$(workspaces.workspace.path)/integrationServer-$(tasks.resolve-props.results.is-release-name).yaml"
+        - name: is-infra-directory
+          value: "$(workspaces.workspace.path)/is-infra"
 
       taskRef:
         kind: Task

@@ -34,6 +34,9 @@ spec:
     - name: destination_is_manifest
       description: "Integration Server yaml path"
       type: string
+    - name: is-infra-directory
+      description: "IS-INFRA folder"
+      type: string
 
   steps:
     - name: curl
@@ -52,6 +55,8 @@ spec:
           value: $(params.configurations)
         - name: DESTINATION_IS_MANIFEST
           value: $(params.destination_is_manifest)
+        - name: IS_INFRA_DIRECTORY
+          value: $(params.is-infra-directory)
       script: |
         #!/bin/sh
 
@@ -68,7 +73,7 @@ spec:
 
         for configuration in ${CONFIGURATIONS} ; do
           echo $configuration
-          curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${configuration}" "${NEXUS_URL}/repository/${NEXUS_REPO}/Configurations/${configuration}"
+          curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${IS_INFRA_DIRECTORY}/${configuration}" "${NEXUS_URL}/repository/${NEXUS_REPO}/Configurations/${configuration}"
         done
   workspaces:
     - name: workspace
