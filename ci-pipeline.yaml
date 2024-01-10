@@ -71,8 +71,6 @@ spec:
           value: is-infra
         - name: deleteExisting
           value: "true"
-      runAfter:
-        - nexus-upload
       taskRef:
         kind: ClusterTask
         name: git-clone
@@ -86,6 +84,8 @@ spec:
       params:
         - name: is-source-directory
           value: is-source
+      runAfter:
+        - clone-app-repo
       taskRef:
         kind: Task
         name: resolve-props
