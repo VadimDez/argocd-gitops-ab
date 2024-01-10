@@ -1,0 +1,69 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: nexus-download
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/categories: CLI
+    tekton.dev/tags: search
+    tekton.dev/platforms: "linux/amd64,linux/s390x,linux/ppc64le,linux/arm64"
+spec:
+  description: >-
+    This task performs curl operation to transfer data from internet.
+
+  params:
+    - name: nexus-user
+      description: User for Nexus
+      type: string
+    - name: nexus-password
+      description: Password for Nexus
+      type: string
+    - name: nexus-url
+      description: "Nexus Repository URL: http://domain only"
+      type: string
+      default: http://vadym-nexusrepo-sonatype-nexus-service.vadym.svc.cluster.local:8081
+    - name: nexus-repo
+      description: "Nexus Folder"
+      default: vadym
+      type: string
+    - name: configurations
+      description: "Configurations path"
+      type: string
+    - name: destination_is_manifest
+      description: "Integration Server yaml path"
+      type: string
+
+  steps:
+    - name: curl
+      image: docker.io/curlimages/curl:7.72.0@sha256:bd5bbd35f89b867c1dccbc84b8be52f3f74dea20b46c5fe0db3780e040afcb6f
+      workingDir: $(workspaces.workspace.path)
+      env:
+        - name: NEXUS_USER
+          value: $(params.nexus-user)
+        - name: NEXUS_PASSWORD
+          value: $(params.nexus-password)
+        - name: NEXUS_URL
+          value: $(params.nexus-url)
+        - name: NEXUS_REPO
+          value: $(params.nexus-repo)
+        - name: CONFIGURATIONS
+          value: $(params.configurations)
+        - name: DESTINATION_IS_MANIFEST
+          value: $(params.destination_is_manifest)
+      script: |
+        #!/bin/sh
+
+        mkdir CR01
+        cd CR01
+        echo "BEFORE ==================================="
+        # Loop through each file in the Nexus directory and download
+        for file in $(curl -s -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -X GET "${NEXUS_URL}/repository/${NEXUS_REPO}/" | grep -o '"downloadUrl" *: *"[^"]*"' | grep -o 'https://[^"]*'); do
+            filename=$(basename "${file}")
+            curl -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -O -J -L "${file}"
+        done
+        echo "AFTER ==================================="
+        ls
+  workspaces:
+    - name: workspace

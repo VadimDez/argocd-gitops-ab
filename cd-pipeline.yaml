@@ -4,5 +4,50 @@ metadata:
   name: cd-pipeline
   namespace: vadym
 spec:
+  params:
+    - name: nexus-user
+      description: User for Nexus
+      type: string
+      default: admin
+
+    - name: nexus-password
+      description: Password for Nexus
+      type: string
+
+    - name: nexus-url
+      description: "Nexus Repository URL: http://domain only"
+      type: string
+      default: http://vadym-nexusrepo-sonatype-nexus-service.vadym.svc.cluster.local:8081
+
+    - name: nexus-repo
+      description: "Nexus Folder"
+      default: vadym
+      type: string
+
   workspaces:
     - name: shared-workspace
+
+  tasks:
+    - name: nexus-download
+      params:
+        - name: nexus-user
+          value: $(params.nexus-user)
+        - name: nexus-password
+          value: $(params.nexus-password)
+        - name: nexus-url
+          value: $(params.nexus-url)
+        - name: nexus-repo
+          value: $(params.nexus-repo)
+        - name: configurations
+          value: $(tasks.resolve-props.results.is-configurations)
+        - name: destination_is_manifest
+          value: "$(workspaces.workspace.path)/integrationServer-$(tasks.resolve-props.results.is-release-name).yaml"
+
+      taskRef:
+        kind: Task
+        name: nexus-download
+      runAfter:
+        - build-integration-server
+      workspaces:
+        - name: workspace
+          workspace: shared-workspace
