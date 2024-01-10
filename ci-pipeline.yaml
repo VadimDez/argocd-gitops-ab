@@ -15,6 +15,10 @@ spec:
       default: https://github.com/VadimDez/ace-infra.git
       description: "SSH url of Infrastructure repository, ex: git@github.com:ace-prod-ref/ace-infra.git"
 
+    # - name: is-config-repo-url
+    #   type: string
+    #   description: "SSH url of Configuration repository, ex: git@github.com:ace-prod-ref/ace-config.git"
+
     - name: app-repo-private-key
       type: string
       default: '""'
@@ -47,6 +51,7 @@ spec:
     - name: shared-workspace
     - name: app-repo-secret
     - name: infra-repo-secret
+    # - name: config-repo-secret
 
   tasks:
     - name: clone-app-repo
@@ -82,6 +87,23 @@ spec:
           workspace: shared-workspace
         - name: ssh-directory
           workspace: infra-repo-secret
+
+    # - name: clone-is-config-repo
+    #   params:
+    #     - name: url
+    #       value: $(params.is-config-repo-url)
+    #     - name: subdirectory
+    #       value: is-config
+    #     - name: deleteExisting
+    #       value: "true"
+    #   taskRef:
+    #     kind: ClusterTask
+    #     name: git-clone
+    #   workspaces:
+    #     - name: output
+    #       workspace: shared-workspace
+    #     - name: ssh-directory
+    #       workspace: config-repo-secret
 
     - name: resolve-props
       params:

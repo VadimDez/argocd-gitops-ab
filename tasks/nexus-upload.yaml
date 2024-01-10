@@ -71,9 +71,9 @@ spec:
         curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ./bars/* "${NEXUS_URL}/repository/${NEXUS_REPO}/bars/"
         curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${DESTINATION_IS_MANIFEST}" "${NEXUS_URL}/repository/${NEXUS_REPO}/integrationServers/"
 
-        for configuration in ${CONFIGURATIONS} ; do
-          echo $configuration
-          curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${IS_INFRA_DIRECTORY}/${configuration}" "${NEXUS_URL}/repository/${NEXUS_REPO}/Configurations/${configuration}"
-        done
+        #for configuration in ${CONFIGURATIONS} ; do
+        #  echo $configuration
+        #  curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${IS_INFRA_DIRECTORY}/${configuration}" "${NEXUS_URL}/repository/${NEXUS_REPO}/Configurations/${configuration}"
+        #done
   workspaces:
     - name: workspace
