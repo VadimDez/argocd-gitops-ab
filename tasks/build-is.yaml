@@ -37,8 +37,6 @@ spec:
           value: $(params.is_manifest_template)
         - name: DESTINATION_IS_MANIFEST
           value: $(params.destination_is_manifest)
-        - name: CONFIGURATIONS
-          value: $(params.configurations)z
         - name: NAME
           value: $(params.name)
         - name: LICENSE
