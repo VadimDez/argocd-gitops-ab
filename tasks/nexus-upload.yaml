@@ -28,6 +28,9 @@ spec:
       description: "Nexus Folder"
       default: vadym
       type: string
+    - name: configurations
+      description: "Configurations path"
+      type: string
 
   steps:
     - name: curl
@@ -42,11 +45,15 @@ spec:
           value: $(params.nexus-url)
         - name: NEXUS_REPO
           value: $(params.nexus-repo)
+        - name: CONFIGURATIONS
+          value: $(params.configurations)
       script: |
         #!/bin/sh
 
-        echo "FILE UPLOADED TO NEXUS" > vadym.txt
+        echo $CONFIGURATIONS
 
         curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ./bars/* "${NEXUS_URL}/repository/${NEXUS_REPO}/bars/"
+        curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ./integrationServers/* "${NEXUS_URL}/repository/${NEXUS_REPO}/integrationServers/"
+        curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${CONFIGURATIONS}/*" "${NEXUS_URL}/repository/${NEXUS_REPO}/Configurations/"
   workspaces:
     - name: workspace
