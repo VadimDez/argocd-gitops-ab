@@ -47,6 +47,6 @@ spec:
 
         echo "FILE UPLOADED TO NEXUS" > vadym.txt
 
-        curl -v -u "$(NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file vadym.txt "${NEXUS_URL}/repository/${NEXUS_REPO}/vadym.txt"
+        curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file vadym.txt "${NEXUS_URL}/repository/${NEXUS_REPO}/vadym.txt"
   workspaces:
     - name: workspace
