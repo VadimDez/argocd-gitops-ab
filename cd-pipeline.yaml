@@ -47,6 +47,8 @@ spec:
           workspace: shared-workspace
 
     - name: apply-resources
+      runAfter:
+        - nexus-download
       taskRef:
         kind: Task
         name: apply-resources
