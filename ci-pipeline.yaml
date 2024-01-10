@@ -34,7 +34,7 @@ spec:
     - name: nexus-url
       description: "Nexus Repository URL: http://domain only"
       type: string
-      default: http://vadym-nexusrepo-sonatype-nexus-service.vadym.svc.cluster.local
+      default: http://vadym-nexusrepo-sonatype-nexus-service.vadym.svc.cluster.local:8081
     - name: nexus-repo
       description: "Nexus Folder"
       default: vadym
