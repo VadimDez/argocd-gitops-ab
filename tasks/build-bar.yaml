@@ -37,5 +37,7 @@ spec:
           --input-path $(workspaces.workspace.path)/source \
           ${project_options} \
           --output-bar-file $(workspaces.workspace.path)/bars/$(params.is-application-name).bar
+
+        ls
   workspaces:
     - name: workspace

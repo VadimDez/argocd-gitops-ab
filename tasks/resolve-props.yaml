@@ -31,6 +31,7 @@ spec:
     - name: parse-source-properties
       image: mikefarah/yq:4.7.1
       script: |
+        ls
         set -ex
 
         properties_yaml_path=$(workspaces.input.path)/$(params.is-source-directory)/pipeline_properties.yaml
@@ -76,6 +77,8 @@ spec:
         resolve_prop '.integrationServer.version' $(results.is-version.path)
         resolve_prop '.integrationServer.baseImage' $(results.is-base-image.path)
 
+        ls
+
     - name: resolve-ocp-properties
       image: quay.io/openshift/origin-cli:latest
       script: |
@@ -99,6 +102,8 @@ spec:
         fi
 
         echo -n $(oc registry info) > $(results.registry-host.path)
+
+        ls
 
   workspaces:
     - name: input
