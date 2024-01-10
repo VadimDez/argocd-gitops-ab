@@ -45,3 +45,11 @@ spec:
       workspaces:
         - name: workspace
           workspace: shared-workspace
+
+    - name: apply-resources
+      taskRef:
+        kind: Task
+        name: apply-resources
+      workspaces:
+        - name: workspace
+          workspace: shared-workspace

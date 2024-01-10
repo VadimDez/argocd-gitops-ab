@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: apply-resources
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/categories: CLI
+    tekton.dev/tags: search
+    tekton.dev/platforms: "linux/amd64,linux/s390x,linux/ppc64le,linux/arm64"
+spec:
+  description: >-
+    This task performs deployes all resources
+
+  steps:
+    - name: apply
+      image: quay.io/openshift/origin-cli:latest
+      workingDir: $(workspaces.workspace.path)
+      script: |
+        #!/bin/sh
+
+        echo "==================================="
+
+        cd CR01
+
+        ls
+
+        oc apply -f ./integrationServers/
+
+  workspaces:
+    - name: workspace
