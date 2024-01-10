@@ -28,12 +28,6 @@ spec:
       description: "Nexus Folder"
       default: vadym
       type: string
-    - name: configurations
-      description: "Configurations path"
-      type: string
-    - name: destination_is_manifest
-      description: "Integration Server yaml path"
-      type: string
 
   steps:
     - name: curl
@@ -48,10 +42,6 @@ spec:
           value: $(params.nexus-url)
         - name: NEXUS_REPO
           value: $(params.nexus-repo)
-        - name: CONFIGURATIONS
-          value: $(params.configurations)
-        - name: DESTINATION_IS_MANIFEST
-          value: $(params.destination_is_manifest)
       script: |
         #!/bin/sh
 

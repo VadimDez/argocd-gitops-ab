@@ -38,10 +38,6 @@ spec:
           value: $(params.nexus-url)
         - name: nexus-repo
           value: $(params.nexus-repo)
-        - name: configurations
-          value: $(tasks.resolve-props.results.is-configurations)
-        - name: destination_is_manifest
-          value: "$(workspaces.workspace.path)/integrationServer-$(tasks.resolve-props.results.is-release-name).yaml"
 
       taskRef:
         kind: Task
