@@ -31,6 +31,9 @@ spec:
     - name: configurations
       description: "Configurations path"
       type: string
+    - name: destination_is_manifest
+      description: "Integration Server yaml path"
+      type: string
 
   steps:
     - name: curl
@@ -47,13 +50,15 @@ spec:
           value: $(params.nexus-repo)
         - name: CONFIGURATIONS
           value: $(params.configurations)
+        - name: DESTINATION_IS_MANIFEST
+          value: $(params.destination_is_manifest)
       script: |
         #!/bin/sh
 
         echo $CONFIGURATIONS
 
         curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ./bars/* "${NEXUS_URL}/repository/${NEXUS_REPO}/bars/"
-        curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ./integrationServers/* "${NEXUS_URL}/repository/${NEXUS_REPO}/integrationServers/"
+        curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ${DESTINATION_IS_MANIFEST} "${NEXUS_URL}/repository/${NEXUS_REPO}/integrationServers/"
         curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${CONFIGURATIONS}/*" "${NEXUS_URL}/repository/${NEXUS_REPO}/Configurations/"
   workspaces:
     - name: workspace
