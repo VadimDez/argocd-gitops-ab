@@ -77,7 +77,7 @@ spec:
         resolve_prop '.integrationServer.version' $(results.is-version.path)
         resolve_prop '.integrationServer.baseImage' $(results.is-base-image.path)
 
-        ls
+        ls $(workspaces.input.path)
 
     - name: resolve-ocp-properties
       image: quay.io/openshift/origin-cli:latest
@@ -103,7 +103,7 @@ spec:
 
         echo -n $(oc registry info) > $(results.registry-host.path)
 
-        ls
+        ls $(workspaces.input.path)
 
   workspaces:
     - name: input

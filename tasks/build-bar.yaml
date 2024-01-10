@@ -20,6 +20,8 @@ spec:
       script: |
         #!/usr/bin/env bash
 
+        ls $(workspaces.workspace.path)
+
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
@@ -38,6 +40,6 @@ spec:
           ${project_options} \
           --output-bar-file $(workspaces.workspace.path)/bars/$(params.is-application-name).bar
 
-        ls
+        ls $(workspaces.workspace.path)
   workspaces:
     - name: workspace

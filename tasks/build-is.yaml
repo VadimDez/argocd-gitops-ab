@@ -56,7 +56,7 @@ spec:
       script: |
         #!/usr/bin/env bash
 
-        ls
+        ls $(workspaces.input.path)
 
         function create_integration_server() {
           envsubst < ${IS_MANIFEST_TEMPLATE} > ${DESTINATION_IS_MANIFEST}
