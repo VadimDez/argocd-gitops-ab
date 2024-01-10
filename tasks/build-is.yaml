@@ -70,4 +70,5 @@ spec:
           create_integration_server
         fi
 
+        ls $(workspaces.input.path)
         cat $DESTINATION_IS_MANIFEST
