@@ -136,10 +136,10 @@ spec:
           echo "$(params.folderToClone)/*" >> .git/info/sparse-checkout
         fi
 
-        git pull --depth=1 origin main
+        git pull --depth="$(params.depth)" origin main
 
         echo "=========================="
-        ls
+        tree
         echo "=========================="
 
         RESULT_SHA="$(git rev-parse HEAD)"
