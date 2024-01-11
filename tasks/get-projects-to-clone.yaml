@@ -21,6 +21,7 @@ spec:
         set -ex
 
         for file in $@; do
+          echo $file
           integration_server_yaml_path=$(workspaces.input.path)/$(params.config-repo-dirname)/$(file)
           echo $integration_server_yaml_path
         done
