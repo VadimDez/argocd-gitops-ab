@@ -136,7 +136,7 @@ spec:
         for project in $@; do
           echo "project: $project"
           # define sub-folders to clone
-          #echo "$project/*" >> .git/info/sparse-checkout
+          echo "$project/*" >> .git/info/sparse-checkout
         done
 
         git pull --depth="$(params.depth)" origin main
