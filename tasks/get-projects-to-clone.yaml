@@ -40,9 +40,14 @@ spec:
         done
 
 
-        # Convert the array to a JSON string
-        projectsString=$(printf '%s\n' "${projects[@]}" | jq -R . | jq -s .)
+        # Build a JSON array manually
+        jsonArray="["
+        for item in "${myArray[@]}"; do
+            jsonArray+="\"$item\","
+        done
+        jsonArray="${jsonArray%,}"  # Remove the trailing comma
+        jsonArray+="]"
 
-        echo -n $projectsString > $(results.projects.path)
+        echo -n $jsonArray > $(results.projects.path)
   workspaces:
     - name: input
