@@ -133,7 +133,7 @@ spec:
 
         # Assuming params.foldersToClone is an array
         echo "=========================="
-        for item in "${params.foldersToClone[@]}"; do
+        for item in "$(params.foldersToClone[*])"; do
             echo "Array item: $item"
         done
 
