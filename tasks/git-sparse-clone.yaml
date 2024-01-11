@@ -124,18 +124,10 @@ spec:
 
         git init "$CHECKOUT_DIR"
 
-        # /ko-app/git-init \
-        #   -url "$(params.url)" \
-        #   -revision "$(params.revision)" \
-        #   -refspec "$(params.refspec)" \
-        #   -path "$CHECKOUT_DIR" \
-        #   -sslVerify="$(params.sslVerify)" \
-        #   -submodules="$(params.submodules)" \
-        #   -depth "$(params.depth)"
-
         cd "$CHECKOUT_DIR"
 
         git remote add origin "$(params.url)"
+        echo "folderToClone: $(params.folderToClone)"
         echo "folderToClone: ${params.folderToClone}"
         if [[ "${params.folderToClone}" != "" ]] ; then
           # spare checkout
