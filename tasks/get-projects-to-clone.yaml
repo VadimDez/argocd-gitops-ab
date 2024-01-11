@@ -29,7 +29,7 @@ spec:
           
           if [ -n "$new_projects" ]; then
               # Add the extracted projects to the array variable
-              projects+=($new_projects)
+              projects="${projects}${new_projects}"
           fi
         }
 
