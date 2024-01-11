@@ -39,9 +39,10 @@ spec:
           extract_projects $integration_server_yaml_path
         done
 
-        # Output the array to the results variable
-        printf -v projectsString '%s,' "${projects[@]}"
-        projectsString="${projectsString%,}"  # Remove the trailing comma
-        echo "projects=[${projectsString}]" >> $(results.projects.path)
+
+        # Convert the array to a JSON string
+        projectsString=$(printf '%s\n' "${projects[@]}" | jq -R . | jq -s .)
+
+        echo -n $projectsString > $(results.projects.path)
   workspaces:
     - name: input
