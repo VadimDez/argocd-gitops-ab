@@ -15,8 +15,9 @@ spec:
   steps:
     - name: parse-source-properties
       image: mikefarah/yq:4.7.1
+      args:
+        - $(params.isServerList[*])
       script: |
-        ls $(workspaces.input.path)
         set -ex
 
         for file in $@; do
