@@ -22,7 +22,7 @@ spec:
 
         for file in $@; do
           echo "File: $file"
-          integration_server_yaml_path=$(workspaces.input.path)/$(params.config-repo-dirname)/$(file)
+          integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
           echo "file - $integration_server_yaml_path"
         done
   workspaces:
