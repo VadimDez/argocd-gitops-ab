@@ -134,16 +134,10 @@ spec:
         # Assuming params.foldersToClone is an array
         foldersToClone=("${params.foldersToClone[@]}")
         echo "=========================="
-        # Loop over the foldersToClone elements and echo each one
+
         for item in "${foldersToClone[@]}"; do
             echo "Array item: $item"
         done
-
-        #for item in $(params.foldersToClone) ; do
-          #echo "Array item: $item"
-          # define sub-folders to clone
-          #echo "$item/*" >> .git/info/sparse-checkout
-        #done
 
 
 
