@@ -138,6 +138,10 @@ spec:
 
         git pull --depth=1 origin main
 
+        echo "=========================="
+        ls
+        echo "=========================="
+
         RESULT_SHA="$(git rev-parse HEAD)"
         EXIT_CODE="$?"
         if [ "$EXIT_CODE" != 0 ] ; then
