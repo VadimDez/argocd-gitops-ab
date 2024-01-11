@@ -132,10 +132,8 @@ spec:
         git config core.sparsecheckout true
 
         # Assuming params.foldersToClone is an array
-        foldersToClone=("${params.foldersToClone[@]}")
         echo "=========================="
-
-        for item in "${foldersToClone[@]}"; do
+        for item in "${params.foldersToClone[@]}"; do
             echo "Array item: $item"
         done
 
