@@ -128,17 +128,14 @@ spec:
 
         git remote add origin "$(params.url)"
 
-        if [[ "$(params.folderToClone)" != "" ]] ; then
-          # spare checkout
-          git config core.sparsecheckout true
+        # spare checkout
+        git config core.sparsecheckout true
 
-
-          for item in "${my_array[@]}"; do
-            echo "Array item: $item"
-            # define sub-folders to clone
-            echo "$item/*" >> .git/info/sparse-checkout
-          done
-        fi
+        for item in "${my_array[@]}"; do
+          echo "Array item: $item"
+          # define sub-folders to clone
+          echo "$item/*" >> .git/info/sparse-checkout
+        done
 
         git pull --depth="$(params.depth)" origin main
 
