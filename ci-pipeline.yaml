@@ -62,9 +62,11 @@ spec:
           value: is-source
         - name: deleteExisting
           value: "true"
+        - name: folderToClone
+          value: "app-1"
       taskRef:
         kind: Task
-        name: git-clone
+        name: git-sparse-clone
       workspaces:
         - name: output
           workspace: shared-workspace
