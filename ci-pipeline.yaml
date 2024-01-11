@@ -83,6 +83,8 @@ spec:
           value: $(params.isServerList[*])
         - name: config-repo-dirname
           value: is-config
+      runAfter:
+        - clone-config-repo
       taskRef:
         kind: Task
         name: get-projects-to-clone
