@@ -39,6 +39,9 @@ spec:
           extract_projects $integration_server_yaml_path
         done
 
-        echo "projects=${projects[@]}" >> $(results.projects.path)
+        # Output the array to the results variable
+        printf -v projectsString '%s,' "${projects[@]}"
+        projectsString="${projectsString%,}"  # Remove the trailing comma
+        echo "projects=[${projectsString}]" >> $(results.projects.path)
   workspaces:
     - name: input
