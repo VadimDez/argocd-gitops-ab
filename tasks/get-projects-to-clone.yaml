@@ -39,6 +39,6 @@ spec:
           extract_projects $integration_server_yaml_path
         done
 
-        echo -n "$projects" > $(results.projects.path)
+        echo "projects=${projects[@]}" >> $(results.projects.path)
   workspaces:
     - name: input
