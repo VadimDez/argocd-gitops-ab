@@ -101,7 +101,7 @@ spec:
         - name: deleteExisting
           value: "true"
         - name: foldersToClone
-          value: $(params.projects[*])
+          value: $(tasks.get-projects-to-clone.results.projects[*])
       runAfter:
         - get-projects-to-clone
       taskRef:

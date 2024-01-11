@@ -12,6 +12,7 @@ spec:
       type: string
   results:
     - name: projects
+      type: array
   steps:
     - name: parse-source-properties
       image: mikefarah/yq:4.7.1
@@ -42,6 +43,6 @@ spec:
           echo $new_projects
         done
 
-        echo "Projects: $projects"
+        echo -n "$projects" > $(results.projects.path)
   workspaces:
     - name: input
