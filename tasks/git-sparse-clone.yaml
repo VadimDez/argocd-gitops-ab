@@ -125,7 +125,7 @@ spec:
         git init "$CHECKOUT_DIR"
 
         echo "==========="
-        ls
+        ls "$(workspaces.output.path)""
         echo "==========="
 
         # /ko-app/git-init \
@@ -148,8 +148,10 @@ spec:
           # define sub-folders to clone
           echo "${params.folderToClone}/*" >> .git/info/sparse-checkout
         fi
-
-        git pull --depth "$(params.depth)" origin master
+        echo "$(params.depth)"
+        GIT_DEPTH="$(params.depth)"
+        echo $GIT_DEPTH
+        git pull --depth=$GIT_DEPTH  origin master
 
         echo "==========="
         ls
