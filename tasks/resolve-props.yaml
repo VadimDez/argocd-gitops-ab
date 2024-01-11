@@ -31,7 +31,6 @@ spec:
     - name: parse-source-properties
       image: mikefarah/yq:4.7.1
       script: |
-        ls $(workspaces.input.path)
         set -ex
 
         properties_yaml_path=$(workspaces.input.path)/$(params.is-source-directory)/pipeline_properties.yaml

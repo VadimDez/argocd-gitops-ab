@@ -18,26 +18,29 @@ spec:
       args:
         - $(params.isServerList[*])
       script: |
+        #!/bin/sh
         set -ex
 
         projects=()
 
-        extract_projects() {
-          yaml_file=$1
-          new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
+        # extract_projects() {
+        #   yaml_file=$1
+        #   new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
           
-          if [ -n "$new_projects" ]; then
-              # Add the extracted projects to the array variable
-              projects+=($new_projects)
-          fi
-        }
+        #   if [ -n "$new_projects" ]; then
+        #       # Add the extracted projects to the array variable
+        #       projects+=($new_projects)
+        #   fi
+        # }
 
         for file in $@; do
           echo "File: $file"
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
           echo "file - $integration_server_yaml_path"
 
-          extract_projects $integration_server_yaml_path
+          new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
+          #extract_projects $integration_server_yaml_path
+          echo $new_projects
         done
 
         echo "Projects: $projects"
