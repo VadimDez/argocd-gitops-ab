@@ -80,7 +80,7 @@ spec:
     - name: get-projects-to-clone
       params:
         - name: isServerList
-          value: $(params.isServerList)
+          value: $(params.isServerList[*])
         - name: config-repo-dirname
           value: is-config
       taskRef:
