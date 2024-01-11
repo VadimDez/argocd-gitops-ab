@@ -42,7 +42,7 @@ spec:
 
         # Build a JSON array manually
         jsonArray="["
-        for item in "${myArray[@]}"; do
+        for item in "${projects[@]}"; do
             jsonArray+="\"$item\","
         done
         jsonArray="${jsonArray%,}"  # Remove the trailing comma
