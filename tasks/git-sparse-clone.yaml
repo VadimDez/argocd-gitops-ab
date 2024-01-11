@@ -84,6 +84,8 @@ spec:
     - image: $(params.gitInitImage)
       name: clone
       resources: {}
+      args:
+        - $(params.foldersToClone[*])
       script: |
         #!/bin/sh
         set -eu -o pipefail
@@ -132,11 +134,9 @@ spec:
         git config core.sparsecheckout true
 
         echo "=========================="
-        for item in "${foldersToClone[@]}"; do
+        for item in $@; do
           echo "Array item: $item"
         done
-
-
 
         git pull --depth="$(params.depth)" origin main
 
