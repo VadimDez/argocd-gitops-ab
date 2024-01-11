@@ -124,6 +124,10 @@ spec:
 
         git init "$CHECKOUT_DIR"
 
+        echo "==========="
+        ls
+        echo "==========="
+
         # /ko-app/git-init \
         #   -url "$(params.url)" \
         #   -revision "$(params.revision)" \
