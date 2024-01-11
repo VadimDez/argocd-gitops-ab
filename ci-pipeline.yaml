@@ -63,8 +63,7 @@ spec:
         - name: deleteExisting
           value: "true"
         - name: foldersToClone
-          value:
-            - "app-1"
+          value: ["item1", "item2", "item3"]
       taskRef:
         kind: Task
         name: git-sparse-clone

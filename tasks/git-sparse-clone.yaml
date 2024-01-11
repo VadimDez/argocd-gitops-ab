@@ -84,9 +84,6 @@ spec:
     - image: $(params.gitInitImage)
       name: clone
       resources: {}
-      env:
-        - name: FOLDERS_TO_COLNE
-          value: ["$(params.foldersToClone[*])"]
       script: |
         #!/bin/sh
         set -eu -o pipefail
@@ -134,10 +131,9 @@ spec:
         # spare checkout
         git config core.sparsecheckout true
 
-        # Assuming params.foldersToClone is an array
         echo "=========================="
-        for item in "$(FOLDERS_TO_COLNE)"; do
-            echo "Array item: $item"
+        for item in "${foldersToClone[@]}"; do
+          echo "Array item: $item"
         done
 
 
