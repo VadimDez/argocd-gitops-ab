@@ -133,7 +133,7 @@ spec:
           git config core.sparsecheckout true
 
           # define sub-folders to clone
-          echo "4(params.folderToClone)/*" >> .git/info/sparse-checkout
+          echo "$(params.folderToClone)/*" >> .git/info/sparse-checkout
         fi
 
         git pull --depth=1 origin main
