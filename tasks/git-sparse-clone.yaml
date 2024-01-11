@@ -127,14 +127,13 @@ spec:
         cd "$CHECKOUT_DIR"
 
         git remote add origin "$(params.url)"
-        echo "folderToClone: $(params.folderToClone)"
-        echo "folderToClone: ${params.folderToClone}"
+
         if [[ "$(params.folderToClone)" != "" ]] ; then
           # spare checkout
           git config core.sparsecheckout true
 
           # define sub-folders to clone
-          echo "${params.folderToClone}/*" >> .git/info/sparse-checkout
+          echo "app-1/*" >> .git/info/sparse-checkout
         fi
 
         git pull --depth=1 origin master
