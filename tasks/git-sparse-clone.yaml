@@ -139,7 +139,7 @@ spec:
         git pull --depth="$(params.depth)" origin main
 
         echo "=========================="
-        tree
+        ls
         echo "=========================="
 
         RESULT_SHA="$(git rev-parse HEAD)"
