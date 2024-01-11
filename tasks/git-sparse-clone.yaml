@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: git-sparse-clone
@@ -84,6 +84,9 @@ spec:
     - image: $(params.gitInitImage)
       name: clone
       resources: {}
+      env:
+        - name: FOLDERS_TO_COLNE
+          value: ["$(params.foldersToClone[*])"]
       script: |
         #!/bin/sh
         set -eu -o pipefail
@@ -133,7 +136,7 @@ spec:
 
         # Assuming params.foldersToClone is an array
         echo "=========================="
-        for item in "$(params.foldersToClone[*])"; do
+        for item in "$(FOLDERS_TO_COLNE)"; do
             echo "Array item: $item"
         done
 
