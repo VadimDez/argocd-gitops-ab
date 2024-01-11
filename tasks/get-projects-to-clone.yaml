@@ -25,7 +25,7 @@ spec:
 
         extract_projects() {
           yaml_file=$1
-          new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
+          new_projects=$(yq e '.metadata.annotations.ab-bars[].projects' "$yaml_file" 2>/dev/null)
           
           if [ -n "$new_projects" ]; then
               # Add the extracted projects to the array variable
