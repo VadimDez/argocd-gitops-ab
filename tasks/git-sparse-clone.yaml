@@ -129,7 +129,7 @@ spec:
         git remote add origin "$(params.url)"
         echo "folderToClone: $(params.folderToClone)"
         echo "folderToClone: ${params.folderToClone}"
-        if [[ "${params.folderToClone}" != "" ]] ; then
+        if [[ "$(params.folderToClone)" != "" ]] ; then
           # spare checkout
           git config core.sparsecheckout true
 
