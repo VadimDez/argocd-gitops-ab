@@ -71,10 +71,10 @@ spec:
       description: the private key to use
       name: sshPrivateKey
       type: string
-    - name: folderToClone
-      default: ""
-      description: the private key to use
-      type: string
+    - name: foldersToClone
+      default: []
+      description: Aray of folders to clone
+      type: array
   results:
     - description: The precise commit SHA that was fetched by this Task
       name: commit
@@ -132,8 +132,12 @@ spec:
           # spare checkout
           git config core.sparsecheckout true
 
-          # define sub-folders to clone
-          echo "$(params.folderToClone)/*" >> .git/info/sparse-checkout
+
+          for item in "${my_array[@]}"; do
+            echo "Array item: $item"
+            # define sub-folders to clone
+            echo "$item/*" >> .git/info/sparse-checkout
+          done
         fi
 
         git pull --depth="$(params.depth)" origin main
