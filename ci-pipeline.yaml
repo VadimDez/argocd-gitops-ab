@@ -67,7 +67,7 @@ spec:
         - name: deleteExisting
           value: "true"
         - name: foldersToClone
-          value: $(params.projects)
+          value: $(params.projects[*])
       taskRef:
         kind: Task
         name: git-sparse-clone
