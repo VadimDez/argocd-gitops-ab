@@ -15,32 +15,28 @@ spec:
       type: array
   steps:
     - name: parse-source-properties
-      image: mikefarah/yq:4.7.1
+      image: image-registry.openshift-image-registry.svc:5000/vadym/sh-tools
       args:
         - $(params.isServerList[*])
       script: |
-        #!/bin/sh
+        #!/usr/bin/env bash
         set -ex
 
-        projects=""
+        projects=()
 
         extract_projects() {
           yaml_file=$1
-          new_projects=$(yq e '.metadata.annotations.ab-bars[].projects' "$yaml_file" 2>/dev/null)
+          new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
           
           if [ -n "$new_projects" ]; then
               # Add the extracted projects to the array variable
-              projects="${projects}${new_projects}"
+              projects+=($new_projects)
           fi
         }
 
         for file in $@; do
-          echo "File: $file"
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
-          echo "file - $integration_server_yaml_path"
-
           extract_projects $integration_server_yaml_path
-          echo $new_projects
         done
 
         echo -n "$projects" > $(results.projects.path)
