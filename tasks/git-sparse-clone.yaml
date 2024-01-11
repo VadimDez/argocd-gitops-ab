@@ -131,10 +131,6 @@ spec:
         # spare checkout
         git config core.sparsecheckout true
 
-        echo "=========================="
-        echo "${params.foldersToClone}"
-        echo "=========================="
-
         for item in $(params.foldersToClone) ; do
           echo "Array item: $item"
           # define sub-folders to clone
