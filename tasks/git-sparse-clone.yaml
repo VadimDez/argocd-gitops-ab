@@ -148,10 +148,8 @@ spec:
           # define sub-folders to clone
           echo "${params.folderToClone}/*" >> .git/info/sparse-checkout
         fi
-        echo "$(params.depth)"
-        GIT_DEPTH="$(params.depth)"
-        echo $GIT_DEPTH
-        git pull --depth=$GIT_DEPTH  origin master
+        echo "DEPTH==========="
+        git pull --depth="${params.depth}" origin master
 
         echo "==========="
         ls
