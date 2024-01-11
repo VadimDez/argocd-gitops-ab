@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: get-projects-to-clone
+spec:
+  params:
+    - name: isServerList
+      default: []
+      description: Aray of IntegrationServer yamls
+      type: array
+    - name: config-repo-dirname
+      type: string
+  results:
+    - name: projects
+  steps:
+    - name: parse-source-properties
+      image: mikefarah/yq:4.7.1
+      script: |
+        ls $(workspaces.input.path)
+        set -ex
+
+        for file in $@; do
+          integration_server_yaml_path=$(workspaces.input.path)/$(params.config-repo-dirname)/$(file)
+          echo $integration_server_yaml_path
+        done
+  workspaces:
+    - name: input

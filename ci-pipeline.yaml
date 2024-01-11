@@ -52,6 +52,10 @@ spec:
       description: "List of projects to build"
       type: array
 
+    - name: isServerList
+      description: "List of IntegrationServer yamls to build"
+      type: array
+
   workspaces:
     - name: shared-workspace
     - name: app-repo-secret
@@ -73,6 +77,19 @@ spec:
         - name: output
           workspace: shared-workspace
 
+    - name: get-projects-to-clone
+      params:
+        - name: isServerList
+          value: $(params.isServerList)
+        - name: config-repo-dirname
+          value: is-config
+      taskRef:
+        kind: Task
+        name: get-projects-to-clone
+      workspaces:
+        - name: input
+          workspace: shared-workspace
+
     - name: clone-app-repo
       params:
         - name: url
@@ -84,7 +101,7 @@ spec:
         - name: foldersToClone
           value: $(params.projects[*])
       runAfter:
-        - clone-config-repo
+        - get-projects-to-clone
       taskRef:
         kind: Task
         name: git-sparse-clone
