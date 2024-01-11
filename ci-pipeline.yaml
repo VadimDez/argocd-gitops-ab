@@ -64,7 +64,7 @@ spec:
           value: "true"
         - name: foldersToClone
           value:
-            - app-1
+            - "app-1"
       taskRef:
         kind: Task
         name: git-sparse-clone
