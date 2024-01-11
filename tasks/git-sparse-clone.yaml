@@ -145,7 +145,7 @@ spec:
           echo "${params.folderToClone}/*" >> .git/info/sparse-checkout
         fi
 
-        git pull --depth="$(params.depth)" origin master
+        git pull --depth "$(params.depth)" origin master
 
         echo "==========="
         ls
