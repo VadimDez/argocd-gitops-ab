@@ -47,6 +47,10 @@ spec:
       default: vadym
       type: string
 
+    - name: projects
+      description: "List of projects to build"
+      type: array
+
   workspaces:
     - name: shared-workspace
     - name: app-repo-secret
