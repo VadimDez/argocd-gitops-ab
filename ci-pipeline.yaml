@@ -17,7 +17,8 @@ spec:
 
     - name: config-repo-url
       type: string
-      description: "SSH url of Configuration repository, ex: git@github.com:ace-prod-ref/ace-config.git"
+      default: https://github.com/VadimDez/config-repo-ab.git
+      description: "SSH url of Configuration repository"
 
     - name: app-repo-private-key
       type: string
@@ -83,10 +84,10 @@ spec:
         - name: foldersToClone
           value: $(params.projects[*])
       runAfter:
-        - clone-app-repo
+        - clone-config-repo
       taskRef:
         kind: Task
-        name: clone-config-repo
+        name: git-sparse-clone
       workspaces:
         - name: output
           workspace: shared-workspace
