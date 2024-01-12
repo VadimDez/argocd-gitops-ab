@@ -17,17 +17,27 @@ spec:
   steps:
     - image: icr.io/appc-dev/ace-server:12.0.2.0-r2-20211115-123200-amd64
       name: generate-bar
-      args: ["$(params.is-projects[*])"]
       script: |
         #!/usr/bin/env bash
 
-        yq --version
 
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        echo "The script received $# projects."
-        echo "The first command line argument is $1."
+        # cp -r $(workspaces.workspace.path)/$(params.is-source-directory) $(workspaces.workspace.path)/source
+
+        # . /opt/ibm/ace-12/server/bin/mqsiprofile
+
+        # project_options=""
+        # for project in $(params.is-project) ; do
+        #   project_options="--project ${project} ${project_options}"
+        # done
+
+        # ibmint package \
+        #   --input-path $(workspaces.workspace.path)/source \
+        #   ${project_options} \
+        #   --output-bar-file $(workspaces.workspace.path)/bars/$(params.is-application-name).bar
+
   workspaces:
     - name: workspace
