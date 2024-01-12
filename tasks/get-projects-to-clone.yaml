@@ -51,7 +51,7 @@ spec:
         done
 
         writeJSONArray() {
-          $array=$1
+          array=$1
           result_path=$2
 
           # Build a JSON array manually
