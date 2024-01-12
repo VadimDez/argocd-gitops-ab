@@ -25,6 +25,5 @@ spec:
         rm -rf $(workspaces.workspace.path)/source
 
         echo "$(params.is-projects[0])"
-        echo "$(params.is-projects[*])"
   workspaces:
     - name: workspace
