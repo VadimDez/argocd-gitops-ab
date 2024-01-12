@@ -21,6 +21,8 @@ spec:
       script: |
         #!/usr/bin/env bash
 
+        yq --version
+
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
