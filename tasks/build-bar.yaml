@@ -25,7 +25,7 @@ spec:
         rm -rf $(workspaces.workspace.path)/source
 
         # Iterate over the elements of the array
-        for item in "${params.is-projects[@]}"; do
+        for item in $(params.is-projects[*]); do
             echo "Array item: $item"
         done
   workspaces:
