@@ -24,6 +24,6 @@ spec:
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        myArray=("${params.is-projects[@]}")
+        myArray=["first", "$(params.is-projects[*])", "last"]
   workspaces:
     - name: workspace
