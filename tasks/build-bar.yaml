@@ -17,6 +17,9 @@ spec:
   steps:
     - image: icr.io/appc-dev/ace-server:12.0.2.0-r2-20211115-123200-amd64
       name: generate-bar
+      env:
+        - name: IS_PROJECTS
+          value: "${params.is-application-names[@]}"
       script: |
         #!/usr/bin/env bash
 
@@ -25,7 +28,7 @@ spec:
         rm -rf $(workspaces.workspace.path)/source
 
         # Access the array parameter
-        myArray=("${params.is-application-names[@]}")
+        myArray=(${IS_PROJECTS[@]})
 
         # Iterate over the elements of the array
         for item in "${myArray[@]}"; do
