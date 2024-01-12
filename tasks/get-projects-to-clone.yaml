@@ -37,7 +37,7 @@ spec:
           exp='.metadata.annotations.ab-bars[].projects'
 
           echo "==========================="
-          newProjects=$(`yq e "$exp // [] | join (\" \")" $yaml_file` 2>/dev/null)
+          newProjects=$(yq e "$exp // [] | join (\" \")" $yaml_file 2>/dev/null)
           echo -n $newProjects
           echo "==========================="
 
