@@ -34,10 +34,8 @@ spec:
           yaml_file=$1
           new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
           
-          exp='.metadata.annotations.ab-bars[].projects'
-
           echo "==========================="
-          newProjects=$(echo -n `yq e "$exp // [] | join (\" \")" $yaml_file` 2>/dev/null)
+          newProjects=$(echo -n `yq e "'.metadata.annotations.ab-bars[].projects' // [] | join (\" \")" $yaml_file` 2>/dev/null)
           echo -n $newProjects
           echo "==========================="
 
