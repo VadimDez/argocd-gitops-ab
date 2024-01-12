@@ -17,9 +17,6 @@ spec:
   steps:
     - image: icr.io/appc-dev/ace-server:12.0.2.0-r2-20211115-123200-amd64
       name: generate-bar
-      env:
-        - name: IS_PROJECTS
-          value: "${params.is-application-names}"
       script: |
         #!/usr/bin/env bash
 
@@ -27,6 +24,6 @@ spec:
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        echo "${IS_PROJECTS[@]}"
+        echo "${params.is-projects[@]}"
   workspaces:
     - name: workspace
