@@ -26,6 +26,5 @@ spec:
 
         echo "$(params.is-projects[0])"
         echo "$(params.is-projects[*])"
-        echo "$(params.is-projects[@])"
   workspaces:
     - name: workspace
