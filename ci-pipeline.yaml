@@ -48,10 +48,6 @@ spec:
       default: vadym
       type: string
 
-    - name: projects
-      description: "List of projects to build"
-      type: array
-
     - name: isServerList
       description: "List of IntegrationServer yamls to build"
       type: array
