@@ -17,6 +17,7 @@ spec:
   steps:
     - image: icr.io/appc-dev/ace-server:12.0.2.0-r2-20211115-123200-amd64
       name: generate-bar
+      args: ["$(params.is-projects[*])"]
       script: |
         #!/usr/bin/env bash
 
@@ -24,6 +25,7 @@ spec:
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        myArray=["first", "$(params.is-projects[*])", "last"]
+        echo "The script received $# projects."
+        echo "The first command line argument is $1."
   workspaces:
     - name: workspace
