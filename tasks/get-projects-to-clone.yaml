@@ -22,10 +22,7 @@ spec:
         #!/usr/bin/env bash
         set -ex
 
-        declare -A integrationservers
-
         integrationservers=()
-
         projects=()
 
         extract_projects() {
@@ -42,12 +39,10 @@ spec:
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
           extract_projects $integration_server_yaml_path
 
-          data=()
           imageName=$(yq e '.metadata.annotations.ab-image-name' "$yaml_file" 2>/dev/null)
-          data["imageName"]="${imageName}"
 
           integrationServerName=$(yq e '.metadata.name' "$yaml_file" 2>/dev/null)
-          integrationservers["${integrationServerName}"]=data
+          integrationservers+=($integrationServerName)
         done
 
         writeJSONArray() {
@@ -67,7 +62,7 @@ spec:
         }
 
         writeJSONArray $(results.projects.path) "${projects[@]}"
-        #echo -n $jsonArray > $(results.projects.path)
+
         echo $integrationservers
   workspaces:
     - name: input
