@@ -19,7 +19,7 @@ spec:
       name: generate-bar
       env:
         - name: IS_PROJECTS
-          value: "${params.is-application-names[@]}"
+          value: ${params.is-application-names[@]}
       script: |
         #!/usr/bin/env bash
 
