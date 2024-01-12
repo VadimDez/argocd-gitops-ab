@@ -147,7 +147,7 @@ spec:
           value: $(tasks.get-projects-to-clone.results.integrationServerNames[*])
         - name: is-projects
           value:
-            - - "app-1"
+            - - app-1
       runAfter:
         - clone-app-repo
       taskRef:
