@@ -35,7 +35,7 @@ spec:
           new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
           
           echo "==========================="
-          newProjects=($(yq eval '.metadata.annotations.bars[].projects[]' "$yaml_file" | tr '\n' ',' | sed 's/,$//'))
+          newProjects=($(yq eval '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" | tr '\n' ',' | sed 's/,$//'))
           echo -n $newProjects
           echo "==========================="
 
