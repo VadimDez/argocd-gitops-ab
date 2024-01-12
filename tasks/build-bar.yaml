@@ -24,6 +24,9 @@ spec:
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        echo "$(params.is-projects[0])"
+        # Iterate over the elements of the array
+        for item in "${params.is-projects[@]}"; do
+            echo "Array item: $item"
+        done
   workspaces:
     - name: workspace
