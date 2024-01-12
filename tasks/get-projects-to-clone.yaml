@@ -65,7 +65,7 @@ spec:
           echo -n $jsonArray > $result_path
         }}
 
-        writeJSONArray $(projects) $(results.projects.path)
+        writeJSONArray "${projects[@]}" $(results.projects.path)
         #echo -n $jsonArray > $(results.projects.path)
         echo $integrationservers
   workspaces:
