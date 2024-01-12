@@ -13,6 +13,8 @@ spec:
   results:
     - name: projects
       type: array
+    - name: integrationServerNames
+      type: array
   steps:
     - name: parse-source-properties
       image: image-registry.openshift-image-registry.svc:5000/vadym/sh-tools
@@ -63,6 +65,6 @@ spec:
 
         writeJSONArray $(results.projects.path) "${projects[@]}"
 
-        echo $integrationservers
+        writeJSONArray $(results.integrationServerNames.path) "${integrationservers[@]}"
   workspaces:
     - name: input
