@@ -24,21 +24,6 @@ spec:
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        echo "${is-application-names[@]}"
-
-        # cp -r $(workspaces.workspace.path)/$(params.is-source-directory) $(workspaces.workspace.path)/source
-
-        # . /opt/ibm/ace-12/server/bin/mqsiprofile
-
-        # project_options=""
-        # for project in $(params.is-project) ; do
-        #   project_options="--project ${project} ${project_options}"
-        # done
-
-        # ibmint package \
-        #   --input-path $(workspaces.workspace.path)/source \
-        #   ${project_options} \
-        #   --output-bar-file $(workspaces.workspace.path)/bars/$(params.is-application-name).bar
-
+        echo "${params.is-application-names[@]}"
   workspaces:
     - name: workspace
