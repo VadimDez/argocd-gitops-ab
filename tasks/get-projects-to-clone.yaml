@@ -50,17 +50,23 @@ spec:
           integrationservers["${integrationServerName}"]=data
         done
 
+        writeJSONArray() {
+          $array=$1
+          result_path=$2
 
-        # Build a JSON array manually
-        jsonArray="["
-        for item in "${projects[@]}"; do
-            jsonArray+="\"$item\","
-        done
-        jsonArray="${jsonArray%,}"  # Remove the trailing comma
-        jsonArray+="]"
+          # Build a JSON array manually
+          jsonArray="["
+          for item in "${array[@]}"; do
+              jsonArray+="\"$item\","
+          done
+          jsonArray="${jsonArray%,}"  # Remove the trailing comma
+          jsonArray+="]"
 
-        echo -n $jsonArray > $(results.projects.path)
+          echo -n $jsonArray > $result_path
+        }}
 
+        writeJSONArray() $projects $(results.projects.path)
+        #echo -n $jsonArray > $(results.projects.path)
         echo $integrationservers
   workspaces:
     - name: input
