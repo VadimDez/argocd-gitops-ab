@@ -36,7 +36,7 @@ spec:
           
 
           echo "==========================="
-          echo -n `yq e "'.metadata.annotations.ab-bars[].projects[]' // [] | join (\" \")" $yaml_file` 
+          echo -n `yq e "'.metadata.annotations.ab-bars[].projects' // [] | join (\" \")" $yaml_file` 
           echo "==========================="
 
           if [ -n "$new_projects" ]; then
