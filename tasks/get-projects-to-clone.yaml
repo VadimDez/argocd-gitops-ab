@@ -70,6 +70,6 @@ spec:
 
         writeJSONArray $(results.integrationServerNames.path) "${integrationservers[@]}"
 
-        writeJSONArray $(results.isProjects.path) "${isProjects[@]}"
+        writeJSONArray $(results.isProjects.path) "${projects[@]}"
   workspaces:
     - name: input
