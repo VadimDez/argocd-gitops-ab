@@ -54,13 +54,13 @@ spec:
           integrationServerName=$(yq e '.metadata.name' "$yaml_file" 2>/dev/null)
           integrationservers+=($integrationServerName)
 
-          // loop over bars
+          # loop over bars
           bars=$(yq e '.metadata.annotations.ab-bars[].bar-name[]' "$yaml_file" 2>/dev/null)
           for i in "${!bars[@]}"; do
               echo "Bar at position ${i} is ..."
           done
 
-            // loop over projects
+            # loop over projects
         done
 
         writeJSONArray() {
