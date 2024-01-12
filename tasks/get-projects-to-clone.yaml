@@ -51,8 +51,9 @@ spec:
         done
 
         writeJSONArray() {
-          array=$1
-          result_path=$2
+          local result_path=$1
+          shift
+          local array=( "$@" )
 
           # Build a JSON array manually
           jsonArray="["
