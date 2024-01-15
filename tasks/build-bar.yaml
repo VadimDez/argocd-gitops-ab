@@ -22,16 +22,23 @@ spec:
       script: |
         #!/usr/bin/env bash
 
+        echo "=============="
+        echo ${params.is-application-names}
+        echo "=============="
+
         function deserialize_array() {
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
-        rm -rf $(workspaces.workspace.path)/source
+
 
         for integrationServer in $@; do
+          # clear source folder
+          rm -rf $(workspaces.workspace.path)/source
           echo "integrationServer: ${integrationServer}"
+          project_options=""
 
           deserialize_array integrationServer barsArray '|'
 
@@ -43,10 +50,13 @@ spec:
 
             for project in "${projects[@]}"; do
                 echo "project in bar list: ${project}"
-                cp -r $(workspaces.workspace.path)/$(params.is-source-directory)/$(project) $(workspaces.workspace.path)/source
+                cp -r $(workspaces.workspace.path)/$(params.is-source-directory)/${project} $(workspaces.workspace.path)/source
+                project_options="--project ${project} ${project_options}"
             done
             ls $(workspaces.workspace.path)/source
-          done
+
+            . /opt/ibm/ace-12/server/bin/mqsiprofile
+            done
         done
   workspaces:
     - name: workspace
