@@ -26,6 +26,8 @@ spec:
         #!/usr/bin/env bash
         set -ex
 
+        bash --version
+
         integrationservers=()
         projects=()
         isProjects=()
