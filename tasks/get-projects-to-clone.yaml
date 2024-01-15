@@ -76,7 +76,7 @@ spec:
           # get bars for for specific yaml file
           bars=($(yq e '.metadata.annotations.ab-bars[].bar-name' "$yaml_file" 2>/dev/null))
           # create a array string separated by ;
-          serialize_array bars serializedBars ";"
+          serialize_array bars serializedBars ';'
           allBarNames["$index"]=$serializedBars
           
           declare -a allBars
