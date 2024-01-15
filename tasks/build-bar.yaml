@@ -33,6 +33,7 @@ spec:
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
 
+        . /opt/ibm/ace-12/server/bin/mqsiprofile
 
         for integrationServer in $@; do
           # clear source folder
@@ -43,10 +44,11 @@ spec:
 
           deserialize_array integrationServer barsArray '|'
 
-          for barsList in "${barsArray[@]}"; do
-            echo "barsList: ${barsList[@]}"
+          for barIndex in "${!barsArray[@]}"; do
+            echo "barIndex: ${barIndex}"
+            echo "barsList: ${barsArray[barIndex]}"
 
-            deserialize_array barsList projects ';'
+            deserialize_array barsArray[barIndex] projects ';'
             declare -p projects
 
             for project in "${projects[@]}"; do
@@ -55,11 +57,10 @@ spec:
                 cp -r $(workspaces.workspace.path)/$(params.is-source-directory)/${project} $(workspaces.workspace.path)/source/${project}
                 project_options="--project ${project} ${project_options}"
             done
+
+            # list copied folders
             ls $(workspaces.workspace.path)/source
 
-            . /opt/ibm/ace-12/server/bin/mqsiprofile
-
-            
           done
         done
   workspaces:
