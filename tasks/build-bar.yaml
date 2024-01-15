@@ -11,7 +11,7 @@ spec:
       type: array
       description: name list of the application
     - name: is-projects
-      type: string
+      type: array
       description: array of arrays - list of projects
 
   steps:
