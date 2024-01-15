@@ -37,6 +37,7 @@ spec:
         for integrationServer in $@; do
           # clear source folder
           rm -rf $(workspaces.workspace.path)/source
+          mkdir $(workspaces.workspace.path)/source
           echo "integrationServer: ${integrationServer}"
           project_options=""
 
