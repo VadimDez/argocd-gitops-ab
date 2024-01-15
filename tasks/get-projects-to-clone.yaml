@@ -99,7 +99,7 @@ spec:
           echo -n $jsonArray > $result_path
         }
 
-        writeJSONArray $(results.projects.path) "${projects[@]}"
+        writeJSONArray $(results.projects.path) "${allProjects[@]}"
 
         writeJSONArray $(results.integrationServerNames.path) "${allintegrationservers[@]}"
 
