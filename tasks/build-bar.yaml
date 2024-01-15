@@ -27,6 +27,8 @@ spec:
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        echo $@
+        for integrationServer in $@; do
+          echo "integrationServer: ${integrationServer}"
+        done
   workspaces:
     - name: workspace
