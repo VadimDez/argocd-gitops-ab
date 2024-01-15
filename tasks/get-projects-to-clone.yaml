@@ -80,6 +80,10 @@ spec:
           done
 
           serialize_array allBars serialized_data '|'
+          echo "Key: $s"
+          for myItem in "${integrationServers[@]}"; do
+            echo "$myItem"
+          done
           integrationServers["$s"]=$serialized_data
         done
 
