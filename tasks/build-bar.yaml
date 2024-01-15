@@ -22,6 +22,9 @@ spec:
       script: |
         #!/usr/bin/env bash
 
+        function deserialize_array() {
+          IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
+        }
 
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
@@ -29,6 +32,21 @@ spec:
 
         for integrationServer in $@; do
           echo "integrationServer: ${integrationServer}"
+
+          deserialize_array integrationServer barsArray '|'
+
+          for barsList in "${barsArray[@]}"; do
+            echo "barsList: ${barsList[@]}"
+
+            deserialize_array barsList projects ';'
+            declare -p projects
+
+            for project in "${projects[@]}"; do
+                echo "project in bar list: ${project}"
+                cp -r $(workspaces.workspace.path)/$(params.is-source-directory)/$(project) $(workspaces.workspace.path)/source
+            done
+            ls $(workspaces.workspace.path)/source
+          done
         done
   workspaces:
     - name: workspace
