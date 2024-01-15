@@ -144,7 +144,8 @@ spec:
         - name: is-source-directory
           value: is-source
         - name: is-application-names
-          value: ["asd"]
+          value:
+            - a
           # value: $(tasks.get-projects-to-clone.results.integrationServerNames[*])
         - name: is-projects
           value: ["$(tasks.get-projects-to-clone.results.isProjects[*])"]
