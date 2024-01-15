@@ -57,6 +57,7 @@ spec:
 
             . /opt/ibm/ace-12/server/bin/mqsiprofile
 
+          done
         done
   workspaces:
     - name: workspace
