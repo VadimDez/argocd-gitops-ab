@@ -29,7 +29,7 @@ spec:
         bash --version
 
         allintegrationservers=()
-        integrationServers()
+        integrationServers=()
         allProjects=()
         isProjects=()
 
