@@ -59,6 +59,7 @@ spec:
           fi
         }
 
+        index=1
         for file in $@; do
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
           extract_all_projects $integration_server_yaml_path
@@ -80,11 +81,8 @@ spec:
           done
 
           serialize_array allBars serialized_data '|'
-          echo "Key: $s"
-          for myItem in "${integrationServers[@]}"; do
-            echo "$myItem"
-          done
-          integrationServers["$s"]=$serialized_data
+          integrationServers["$index"]=$serialized_data
+          let "index++"
         done
 
         writeJSONArray() {
@@ -102,15 +100,6 @@ spec:
 
           echo -n $jsonArray > $result_path
         }
-
-        echo "==============================";
-        for key in "${!integrationServers[@]}"; do
-          echo "key: $key"
-        done
-        for item in "${integrationServers[@]}"; do
-          echo "$item"
-        done
-        echo "==============================";
 
         writeJSONArray $(results.projects.path) "${allProjects[@]}"
 
