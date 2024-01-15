@@ -28,11 +28,23 @@ spec:
 
         bash --version
 
-        integrationservers=()
-        projects=()
+        allintegrationservers=()
+        integrationServers()
+        allProjects=()
         isProjects=()
 
-        extract_projects() {
+        function serialize_array() {
+          declare -n _array="${1}" _str="${2}" # _array, _str => local reference vars
+          local IFS="${3:-$'\x01'}"
+          # shellcheck disable=SC2034 # Reference vars assumed used by caller
+          _str="${_array[*]}" # * => join on IFS
+        }
+
+        function deserialize_array() {
+          IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
+        }
+
+        extract_all_projects() {
           yaml_file=$1
           new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
           
@@ -43,27 +55,32 @@ spec:
 
           if [ -n "$new_projects" ]; then
               # Add the extracted projects to the array variable
-              projects+=($new_projects)
+              allProjects+=($new_projects)
           fi
         }
 
         for file in $@; do
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
-          extract_projects $integration_server_yaml_path
+          extract_all_projects $integration_server_yaml_path
 
           imageName=$(yq e '.metadata.annotations.ab-image-name' "$yaml_file" 2>/dev/null)
 
           integrationServerName=$(yq e '.metadata.name' "$yaml_file" 2>/dev/null)
-          integrationservers+=($integrationServerName)
+          allintegrationservers+=($integrationServerName)
+
+          # get bars for for specific yaml file
+          bars=($(yq e '.metadata.annotations.ab-bars[].bar-name' "$yaml_file" 2>/dev/null))
+          
+          declare -a allBars
 
           # loop over bars
-          bars=$(yq e '.metadata.annotations.ab-bars' "$yaml_file" 2>/dev/null)
-          
           for i in "${!bars[@]}"; do
-              echo "Bar at position ${i} is ... ${yq e '.metadata.annotations.ab-bars["$i"].bar-name'}"
+            projects=($(yq e ".metadata.annotations.ab-bars[$i].projects | join(\";\")" "./is.yaml" 2>/dev/null))
+            allBars["$i"]=${projects[@]}
           done
 
-            # loop over projects
+          serialize_array allBars serialized_data '|'
+          integrationServers["$s"]=$serialized_data
         done
 
         writeJSONArray() {
@@ -84,8 +101,8 @@ spec:
 
         writeJSONArray $(results.projects.path) "${projects[@]}"
 
-        writeJSONArray $(results.integrationServerNames.path) "${integrationservers[@]}"
+        writeJSONArray $(results.integrationServerNames.path) "${allintegrationservers[@]}"
 
-        writeJSONArray $(results.isProjects.path) "${projects[@]}"
+        writeJSONArray $(results.isProjects.path) "${integrationServers[@]}"
   workspaces:
     - name: input

@@ -24,5 +24,7 @@ spec:
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
+
+        echo ${is-projects[@]}
   workspaces:
     - name: workspace
