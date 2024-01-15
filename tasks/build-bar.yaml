@@ -30,6 +30,8 @@ spec:
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
+        deserialize_array "$(params.is-application-names)" barNames '|'
+
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
 
@@ -62,6 +64,12 @@ spec:
             # list copied folders
             ls $(workspaces.workspace.path)/source
 
+            echo "BAR NAME: $(barNames[barIndex])"
+            
+            ibmint package \
+              --input-path $(workspaces.workspace.path)/source \
+              ${project_options} \
+              --output-bar-file $(workspaces.workspace.path)/bars/$(barNames[barIndex]).bar
           done
         done
 
