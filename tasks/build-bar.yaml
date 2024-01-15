@@ -11,7 +11,7 @@ spec:
       type: array
       description: name list of the application
     - name: is-projects
-      type: array
+      type: string
       description: array of arrays - list of projects
 
   steps:
@@ -25,7 +25,6 @@ spec:
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        echo "$(params.is-projects[*])"
-        echo "${params.is-projects[@]}""
+        echo "$(params.is-projects)"
   workspaces:
     - name: workspace
