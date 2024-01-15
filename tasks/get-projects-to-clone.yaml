@@ -103,7 +103,8 @@ spec:
 
         writeJSONArray $(results.projects.path) "${allProjects[@]}"
 
-        writeJSONArray $(results.integrationServerNames.path) "${allintegrationservers[@]}"
+        serialize_array allintegrationservers serializedIntegrationServerNames '|'
+        echo -n $serializedIntegrationServerNames > $(results.integrationServerNames.path)
 
         writeJSONArray $(results.isProjects.path) "${integrationServers[@]}"
   workspaces:
