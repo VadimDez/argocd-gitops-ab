@@ -75,7 +75,7 @@ spec:
 
           # loop over bars
           for i in "${!bars[@]}"; do
-            projects=($(yq e ".metadata.annotations.ab-bars[$i].projects | join(\";\")" "./is.yaml" 2>/dev/null))
+            projects=($(yq e ".metadata.annotations.ab-bars[$i].projects | join(\";\")" "$yaml_file" 2>/dev/null))
             allBars["$i"]=${projects[@]}
           done
 
