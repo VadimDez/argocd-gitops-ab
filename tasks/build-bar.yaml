@@ -25,6 +25,6 @@ spec:
         mkdir -p $(workspaces.workspace.path)/bars
         rm -rf $(workspaces.workspace.path)/source
 
-        echo $(params.is-projects[*])
+        echo "$(params.is-projects[*])"
   workspaces:
     - name: workspace
