@@ -23,7 +23,7 @@ spec:
         #!/usr/bin/env bash
 
         echo "=============="
-        echo "${params.is-application-names}"
+        echo "$(params.is-application-names)"
         echo "=============="
 
         function deserialize_array() {
@@ -61,7 +61,6 @@ spec:
 
             # list copied folders
             ls $(workspaces.workspace.path)/source
-
           done
         done
 
