@@ -14,7 +14,7 @@ spec:
     - name: projects
       type: array
     - name: integrationServerNames
-      type: array
+      type: string
     - name: isProjects
       type: array
   steps:
