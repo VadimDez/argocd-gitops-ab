@@ -16,7 +16,7 @@ spec:
     - name: integrationServerNames
       type: array
     - name: isProjects
-      type: string
+      type: array
   steps:
     - name: parse-source-properties
       image: image-registry.openshift-image-registry.svc:5000/vadym/sh-tools
@@ -99,14 +99,10 @@ spec:
           echo -n $jsonArray > $result_path
         }
 
-        serialize_array integrationServers serialized_is ';;;'
-
-        echo $serialized_is
-
         writeJSONArray $(results.projects.path) "${allProjects[@]}"
 
         writeJSONArray $(results.integrationServerNames.path) "${allintegrationservers[@]}"
 
-        writeJSONArray $(results.isProjects.path) "$serialized_is"
+        writeJSONArray $(results.isProjects.path) "${integrationServers[@]}"
   workspaces:
     - name: input
