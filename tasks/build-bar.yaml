@@ -23,7 +23,7 @@ spec:
         #!/usr/bin/env bash
 
         echo "=============="
-        echo ${params.is-application-names}
+        echo ${params.is-application-names[@]}
         echo "=============="
 
         function deserialize_array() {
@@ -50,13 +50,13 @@ spec:
 
             for project in "${projects[@]}"; do
                 echo "project in bar list: ${project}"
-                cp -r $(workspaces.workspace.path)/$(params.is-source-directory)/${project} $(workspaces.workspace.path)/source
+                cp -r $(workspaces.workspace.path)/$(params.is-source-directory)/${project} $(workspaces.workspace.path)/source/${project}
                 project_options="--project ${project} ${project_options}"
             done
             ls $(workspaces.workspace.path)/source
 
             . /opt/ibm/ace-12/server/bin/mqsiprofile
-            done
+
         done
   workspaces:
     - name: workspace
