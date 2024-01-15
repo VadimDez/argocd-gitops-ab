@@ -23,7 +23,7 @@ spec:
         #!/usr/bin/env bash
 
         echo "=============="
-        echo ${params.is-application-names[@]}
+        echo ${params.is-application-names}
         echo "=============="
 
         function deserialize_array() {
@@ -35,16 +35,17 @@ spec:
 
         . /opt/ibm/ace-12/server/bin/mqsiprofile
 
-        for integrationServer in $@; do
-          # clear source folder
-          rm -rf $(workspaces.workspace.path)/source
-          mkdir $(workspaces.workspace.path)/source
-          echo "integrationServer: ${integrationServer}"
-          project_options=""
+        ls $(workspaces.workspace.path)/bars/
 
+        for integrationServer in $@; do
           deserialize_array integrationServer barsArray '|'
 
           for barIndex in "${!barsArray[@]}"; do
+            # clear source folder
+            rm -rf $(workspaces.workspace.path)/source
+            mkdir $(workspaces.workspace.path)/source
+            project_options=""
+
             echo "barIndex: ${barIndex}"
             echo "barsList: ${barsArray[barIndex]}"
 
@@ -63,5 +64,7 @@ spec:
 
           done
         done
+
+        ls $(workspaces.workspace.path)/bars/
   workspaces:
     - name: workspace
