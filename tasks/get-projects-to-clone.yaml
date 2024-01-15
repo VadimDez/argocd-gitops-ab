@@ -29,7 +29,7 @@ spec:
         bash --version
 
         allintegrationservers=()
-        integrationServers=()
+        declare -a integrationServers=()
         allProjects=()
         isProjects=()
 
@@ -98,6 +98,12 @@ spec:
 
           echo -n $jsonArray > $result_path
         }
+
+        echo "==============================";
+        for item in "${integrationServers[@]}"; do
+          echo "$item"
+        done
+        echo "==============================";
 
         writeJSONArray $(results.projects.path) "${allProjects[@]}"
 
