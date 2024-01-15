@@ -61,7 +61,9 @@ spec:
           fi
         }
 
-        index=1
+        # store all bar names
+        declare -a allBarNames
+        index=0
         for file in $@; do
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
           extract_all_projects $integration_server_yaml_path
@@ -75,6 +77,7 @@ spec:
           bars=($(yq e '.metadata.annotations.ab-bars[].bar-name' "$yaml_file" 2>/dev/null))
           # create a array string separated by ;
           serialize_array bars serializedBars ";"
+          allBarNames["$s"]=serializedBars
           
           declare -a allBars
 
@@ -109,7 +112,8 @@ spec:
 
         serialize_array allintegrationservers serializedIntegrationServerNames '|'
         echo -n $serializedIntegrationServerNames > $(results.integrationServerNames.path)
-        echo -n $serializedBars > $(results.barNames.path)
+        serialize_array allBarNames serializedAllBarNames ';;'
+        echo -n $serializedAllBarNames > $(results.barNames.path)
 
         writeJSONArray $(results.isProjects.path) "${integrationServers[@]}"
   workspaces:

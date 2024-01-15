@@ -26,15 +26,14 @@ spec:
         #!/usr/bin/env bash
 
         echo "=============="
-        echo "$(params.is-application-names)"
+        echo "$(params.barNames)"
         echo "=============="
 
         function deserialize_array() {
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
-        deserialize_array "$(params.barNames)" barNames ';'
-        echo "${barNames[@]}"
+        deserialize_array "$(params.barNames)" allBarNames ';;'
 
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
@@ -43,7 +42,10 @@ spec:
 
         ls $(workspaces.workspace.path)/bars/
 
+        index=0
         for integrationServer in $@; do
+          deserialize_array allBarNames[index] barNames ';'
+
           deserialize_array integrationServer barsArray '|'
 
           for barIndex in "${!barsArray[@]}"; do
@@ -75,6 +77,8 @@ spec:
               ${project_options} \
               --output-bar-file $(workspaces.workspace.path)/bars/$(barNames[barIndex]).bar
           done
+
+          let "index++"
         done
 
         ls $(workspaces.workspace.path)/bars/
