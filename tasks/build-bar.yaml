@@ -8,8 +8,8 @@ spec:
       type: string
       description: directory where ACE source is located, relative to workspace
     - name: is-application-names
-      type: array
-      description: name list of the application
+      type: string
+      description: name list of bars
     - name: is-projects
       type: array
       description: array of arrays - list of projects
