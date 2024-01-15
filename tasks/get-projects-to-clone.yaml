@@ -15,6 +15,8 @@ spec:
       type: array
     - name: integrationServerNames
       type: string
+    - name: barNames
+      type: string
     - name: isProjects
       type: array
   steps:
@@ -71,6 +73,8 @@ spec:
 
           # get bars for for specific yaml file
           bars=($(yq e '.metadata.annotations.ab-bars[].bar-name' "$yaml_file" 2>/dev/null))
+          # create a array string separated by ;
+          serialize_array bars serializedBars ";"
           
           declare -a allBars
 
@@ -105,6 +109,7 @@ spec:
 
         serialize_array allintegrationservers serializedIntegrationServerNames '|'
         echo -n $serializedIntegrationServerNames > $(results.integrationServerNames.path)
+        echo -n $serializedBars > $(results.barNames.path)
 
         writeJSONArray $(results.isProjects.path) "${integrationServers[@]}"
   workspaces:

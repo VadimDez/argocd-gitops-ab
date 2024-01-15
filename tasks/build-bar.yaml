@@ -10,6 +10,9 @@ spec:
     - name: is-application-names
       type: string
       description: name list of bars
+    - name: barNames
+      type: string
+      description: name list of bars
     - name: is-projects
       type: array
       description: array of arrays - list of projects
@@ -30,7 +33,8 @@ spec:
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
-        deserialize_array "$(params.is-application-names)" barNames '|'
+        deserialize_array "$(params.barNames)" barNames ';'
+        echo "${barNames[@]}"
 
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
@@ -65,7 +69,7 @@ spec:
             ls $(workspaces.workspace.path)/source
 
             echo "BAR NAME: $(barNames[barIndex])"
-            
+
             ibmint package \
               --input-path $(workspaces.workspace.path)/source \
               ${project_options} \

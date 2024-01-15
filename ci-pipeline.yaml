@@ -145,6 +145,8 @@ spec:
           value: is-source
         - name: is-application-names
           value: $(tasks.get-projects-to-clone.results.integrationServerNames)
+        - name: barNames
+          value: $(tasks.get-projects-to-clone.results.barNames)
         - name: is-projects
           value: ["$(tasks.get-projects-to-clone.results.isProjects[*])"]
       runAfter:
