@@ -183,16 +183,8 @@ spec:
       runAfter:
         - build-bar
       taskRef:
-        kind: Task
-        resolver: cluster
-        # name: custom-buildah
-        params:
-          - name: kind
-            value: task
-          - name: name
-            value: custom-buildah
-          - name: namespace
-            value: vadym
+        kind: ClusterTask
+        name: buildah
       workspaces:
         - name: source
           workspace: shared-workspace
