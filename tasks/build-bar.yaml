@@ -45,12 +45,6 @@ spec:
         for integrationServer in $@; do
           deserialize_array allBarNames[index] barNames ';'
 
-          echo "=============="
-          echo "bar names:"
-          echo "${barNames[0]}"
-          echo "${barNames[1]}"
-          echo "=============="
-
           deserialize_array integrationServer barsArray '|'
 
           for barIndex in "${!barsArray[@]}"; do
@@ -76,6 +70,11 @@ spec:
             ls $(workspaces.workspace.path)/source
 
             echo "BAR NAME: $(barNames[barIndex])"
+            echo "=============="
+            echo "bar names:"
+            echo "${barNames[barIndex]}"
+            echo "${barNames[$barIndex]}"
+            echo "=============="
 
             ibmint package \
               --input-path $(workspaces.workspace.path)/source \
