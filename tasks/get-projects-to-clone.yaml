@@ -63,7 +63,7 @@ spec:
 
         # store all bar names
         # declare -a allBarNames
-        # index=0
+        idx=0
         for file in $@; do
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
           extract_all_projects $integration_server_yaml_path
@@ -90,7 +90,9 @@ spec:
 
           serialize_array allBars serialized_data '|'
           integrationServers["$index"]=$serialized_data
-          # let "index++"
+
+          # increment index
+          let "idx++"
         done
 
         writeJSONArray() {
