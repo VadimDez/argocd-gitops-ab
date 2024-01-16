@@ -52,6 +52,10 @@ spec:
       description: "List of IntegrationServer yamls to build"
       type: array
 
+    - name: changeRequest
+      description: "Change request"
+      type: string
+
   workspaces:
     - name: shared-workspace
     - name: app-repo-secret
@@ -126,18 +130,19 @@ spec:
         - name: ssh-directory
           workspace: infra-repo-secret
 
-    # - name: resolve-props
-    #   params:
-    #     - name: is-source-directory
-    #       value: is-source
-    #   runAfter:
-    #     - clone-app-repo
-    #   taskRef:
-    #     kind: Task
-    #     name: resolve-props
-    #   workspaces:
-    #     - name: input
-    #       workspace: shared-workspace
+    - name: resolve-props
+      params:
+        - name: is-source-directory
+          value: is-source
+      runAfter:
+        - clone-is-infra-repo
+        - clone-app-repo
+      taskRef:
+        kind: Task
+        name: resolve-props
+      workspaces:
+        - name: input
+          workspace: shared-workspace
 
     - name: build-bar
       params:
@@ -150,7 +155,7 @@ spec:
         - name: is-projects
           value: ["$(tasks.get-projects-to-clone.results.isProjects[*])"]
       runAfter:
-        - clone-app-repo
+        - resolve-props
       taskRef:
         kind: Task
         name: build-bar
@@ -158,27 +163,32 @@ spec:
         - name: workspace
           workspace: shared-workspace
 
-    # - name: build-is-image
-    #   params:
-    #     - name: BUILD_EXTRA_ARGS
-    #       value: --build-arg BASE=$(params.ace-base-image)
-    #     - name: TLSVERIFY
-    #       value: "false"
-    #     - name: IMAGE
-    #       value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)/$(tasks.resolve-props.results.is-release-name):$(tasks.clone-app-repo.results.commit)
-    #     - name: DOCKERFILE
-    #       value: $(workspaces.source.path)/is-infra/Dockerfile
-    #     - name: CONTEXT
-    #       value: $(workspaces.source.path)/bars
-    #   runAfter:
-    #     - clone-is-infra-repo
-    #     - build-bar
-    #   taskRef:
-    #     kind: ClusterTask
-    #     name: buildah
-    #   workspaces:
-    #     - name: source
-    #       workspace: shared-workspace
+    - name: build-is-image
+      params:
+        - name: BUILD_EXTRA_ARGS
+          value: --build-arg BASE=$(params.ace-base-image)
+        - name: TLSVERIFY
+          value: "false"
+        - name: IMAGE
+          value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)
+          # value: $(tasks.resolve-props.results.registry-host)/$(context.pipelineRun.namespace)/$(tasks.resolve-props.results.is-release-name):$(tasks.clone-app-repo.results.commit)
+        - name: DOCKERFILE
+          value: $(workspaces.source.path)/is-infra/Dockerfile
+        - name: CONTEXT
+          value: $(workspaces.source.path)/bars
+        - name: allIntegrationServerNames
+          value: $(tasks.get-projects-to-clone.results.integrationServerNames)
+        - name: CHANGE_REQUEST
+          value: $(params.changeRequest)
+      runAfter:
+        - clone-is-infra-repo
+        - build-bar
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-workspace
 
     # - name: build-integration-server
     #   params:

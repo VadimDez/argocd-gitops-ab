@@ -2,11 +2,11 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   annotations:
-    tekton.dev/pipelines.minVersion: '0.19'
+    tekton.dev/pipelines.minVersion: "0.19"
     tekton.dev/tags: image-build
   name: buildah
   labels:
-    app.kubernetes.io/version: '0.1'
+    app.kubernetes.io/version: "0.1"
     operator.tekton.dev/provider-type: redhat
 spec:
   description: >-
@@ -38,24 +38,33 @@ spec:
       description: Path to the directory to use as context.
       name: CONTEXT
       type: string
-    - default: 'true'
+    - default: "true"
       description: >-
         Verify the TLS on the registry endpoint (for push/pull to a non-TLS
         registry)
       name: TLSVERIFY
       type: string
     - default: oci
-      description: 'The format of the built container, oci or docker'
+      description: "The format of the built container, oci or docker"
       name: FORMAT
       type: string
-    - default: ''
+    - default: ""
       description: Extra parameters passed for the build command when building images.
       name: BUILD_EXTRA_ARGS
       type: string
-    - default: ''
+    - default: ""
       description: Extra parameters passed for the push command when pushing images.
       name: PUSH_EXTRA_ARGS
       type: string
+    - name: allIntegrationServerNames
+      type: string
+      default: ""
+      description: all names for integration serverse
+    - name: CHANGE_REQUEST
+      type: string
+      default: ""
+      description: Change request name
+
   results:
     - description: Digest of the image just built.
       name: IMAGE_DIGEST
@@ -63,37 +72,52 @@ spec:
     - image: $(params.BUILDER_IMAGE)
       name: build
       resources: {}
+      env:
+        - name: ALL_INTEGRATION_SERVER_NAMES
+          value: $(params.allIntegrationServerNames)
       script: |
-        buildah --storage-driver=$(params.STORAGE_DRIVER) bud \
-          $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
-          --tls-verify=$(params.TLSVERIFY) --no-cache \
-          -f $(params.DOCKERFILE) -t $(params.IMAGE) $(params.CONTEXT)
+        function deserialize_array() {
+          IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
+        }
+
+        deserialize_array ALL_INTEGRATION_SERVER_NAMES allIntegrationServerNames '|'
+
+        for name in "${!allIntegrationServerNames[@]}"; do
+          fullImage="${params.IMAGE}/${name}:${(params.changeRequest}"
+
+          echo "full image name: ${fullImage}"
+        done
+
+        # buildah --storage-driver=$(params.STORAGE_DRIVER) bud \
+        #   $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
+        #   --tls-verify=$(params.TLSVERIFY) --no-cache \
+        #   -f $(params.DOCKERFILE) -t $(params.IMAGE) $(params.CONTEXT)
       securityContext:
         privileged: true
       volumeMounts:
         - mountPath: /var/lib/containers
           name: varlibcontainers
       workingDir: $(workspaces.source.path)
-    - image: $(params.BUILDER_IMAGE)
-      name: push
-      resources: {}
-      script: |
-        buildah --storage-driver=$(params.STORAGE_DRIVER) push \
-          $(params.PUSH_EXTRA_ARGS) --tls-verify=$(params.TLSVERIFY) \
-          --digestfile $(workspaces.source.path)/image-digest $(params.IMAGE) \
-          docker://$(params.IMAGE)
-      securityContext:
-        privileged: true
-      volumeMounts:
-        - mountPath: /var/lib/containers
-          name: varlibcontainers
-      workingDir: $(workspaces.source.path)
-    - image: $(params.BUILDER_IMAGE)
-      name: digest-to-results
-      resources: {}
-      script: >-
-        cat $(workspaces.source.path)/image-digest | tee
-        /tekton/results/IMAGE_DIGEST
+    # - image: $(params.BUILDER_IMAGE)
+    #   name: push
+    #   resources: {}
+    #   script: |
+    #     buildah --storage-driver=$(params.STORAGE_DRIVER) push \
+    #       $(params.PUSH_EXTRA_ARGS) --tls-verify=$(params.TLSVERIFY) \
+    #       --digestfile $(workspaces.source.path)/image-digest $(params.IMAGE) \
+    #       docker://$(params.IMAGE)
+    #   securityContext:
+    #     privileged: true
+    #   volumeMounts:
+    #     - mountPath: /var/lib/containers
+    #       name: varlibcontainers
+    #   workingDir: $(workspaces.source.path)
+    # - image: $(params.BUILDER_IMAGE)
+    #   name: digest-to-results
+    #   resources: {}
+    #   script: >-
+    #     cat $(workspaces.source.path)/image-digest | tee
+    #     /tekton/results/IMAGE_DIGEST
   volumes:
     - emptyDir: {}
       name: varlibcontainers
