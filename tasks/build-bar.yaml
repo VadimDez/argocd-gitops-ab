@@ -33,7 +33,11 @@ spec:
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
-        deserialize_array params.barNames allBarNames '|'
+        deserialize_array $(params.barNames) allBarNames '|'
+
+        echo "=============="
+        echo "${allBarNames[@]}"
+        echo "=============="
 
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
