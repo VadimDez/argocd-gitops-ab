@@ -61,8 +61,7 @@ spec:
             echo "============"
             for project in "${projects[@]}"; do
                 echo "project in bar list: ${project}"
-                mkdir $(workspaces.workspace.path)/source/${project}
-                cp -r $(workspaces.workspace.path)/$(params.is-source-directory)/${project} $(workspaces.workspace.path)/source/${project}
+                cp -r $(workspaces.workspace.path)/$(params.is-source-directory)/${project} $(workspaces.workspace.path)/source/
                 project_options="--project ${project} ${project_options}"
             done
 
