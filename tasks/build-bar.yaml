@@ -20,20 +20,23 @@ spec:
   steps:
     - image: icr.io/appc-dev/ace-server:12.0.2.0-r2-20211115-123200-amd64
       name: generate-bar
+      env:
+        - name: ALL_BAR_NAMES
+          value: $(params.barNames)
       args:
         - $(params.is-projects[*])
       script: |
         #!/usr/bin/env bash
 
         echo "=============="
-        echo "$(params.barNames)"
+        echo $ALL_BAR_NAMES
         echo "=============="
 
         function deserialize_array() {
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
-        deserialize_array "${params.barNames}" allBarNames '|'
+        deserialize_array ALL_BAR_NAMES allBarNames '|'
 
         echo "=============="
         echo "${allBarNames[@]}"
