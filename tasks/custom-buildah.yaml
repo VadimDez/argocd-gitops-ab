@@ -88,36 +88,12 @@ spec:
           echo "full image name: ${fullImage}"
         done
 
-        # buildah --storage-driver=$(params.STORAGE_DRIVER) bud \
-        #   $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
-        #   --tls-verify=$(params.TLSVERIFY) --no-cache \
-        #   -f $(params.DOCKERFILE) -t $(params.IMAGE) $(params.CONTEXT)
       securityContext:
         privileged: true
       volumeMounts:
         - mountPath: /var/lib/containers
           name: varlibcontainers
       workingDir: $(workspaces.source.path)
-    # - image: $(params.BUILDER_IMAGE)
-    #   name: push
-    #   resources: {}
-    #   script: |
-    #     buildah --storage-driver=$(params.STORAGE_DRIVER) push \
-    #       $(params.PUSH_EXTRA_ARGS) --tls-verify=$(params.TLSVERIFY) \
-    #       --digestfile $(workspaces.source.path)/image-digest $(params.IMAGE) \
-    #       docker://$(params.IMAGE)
-    #   securityContext:
-    #     privileged: true
-    #   volumeMounts:
-    #     - mountPath: /var/lib/containers
-    #       name: varlibcontainers
-    #   workingDir: $(workspaces.source.path)
-    # - image: $(params.BUILDER_IMAGE)
-    #   name: digest-to-results
-    #   resources: {}
-    #   script: >-
-    #     cat $(workspaces.source.path)/image-digest | tee
-    #     /tekton/results/IMAGE_DIGEST
   volumes:
     - emptyDir: {}
       name: varlibcontainers
