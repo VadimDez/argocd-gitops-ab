@@ -186,6 +186,13 @@ spec:
         kind: Task
         resolver: cluster
         # name: custom-buildah
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: custom-buildah
+          - name: namespace
+            value: vadym
       workspaces:
         - name: source
           workspace: shared-workspace
