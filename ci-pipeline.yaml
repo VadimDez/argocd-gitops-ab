@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: ci-pipeline
@@ -184,8 +184,8 @@ spec:
         - build-bar
       taskRef:
         kind: Task
-        name: custom-buildah
         resolver: cluster
+        # name: custom-buildah
       workspaces:
         - name: source
           workspace: shared-workspace
