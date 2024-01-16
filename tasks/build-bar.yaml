@@ -34,11 +34,6 @@ spec:
 
         deserialize_array ALL_BAR_NAMES allBarNames '|'
 
-        echo "=============="
-        echo "${allBarNames[0]}"
-        echo "${allBarNames[1]}"
-        echo "=============="
-
         rm -rf $(workspaces.workspace.path)/bars
         mkdir -p $(workspaces.workspace.path)/bars
 
@@ -51,7 +46,9 @@ spec:
           deserialize_array allBarNames[index] barNames ';'
 
           echo "=============="
-          echo "${barNames[@]}"
+          echo "bar names:"
+          echo "${barNames[0]}"
+          echo "${barNames[1]}"
           echo "=============="
 
           deserialize_array integrationServer barsArray '|'
