@@ -18,7 +18,7 @@ spec:
       description: array of arrays - list of projects
 
   steps:
-    - image: icr.io/appc-dev/ace-server:12.0.2.0-r2-20211115-123200-amd64
+    - image: cp.icr.io/cp/appc/ace-server-prod@sha256:d0e4347ce61007aaba0242e26ac5f0dc82296cfbc59857170c7059e2f4e4b4fc
       name: generate-bar
       env:
         - name: ALL_BAR_NAMES
