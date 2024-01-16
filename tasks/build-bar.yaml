@@ -79,7 +79,6 @@ spec:
 
             ibmint package \
               --input-path $(workspaces.workspace.path)/source \
-              ${project_options} \
               --output-bar-file $(workspaces.workspace.path)/bars/${barNames[barIndex]}.bar
           done
 
