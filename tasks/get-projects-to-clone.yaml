@@ -92,7 +92,8 @@ spec:
           integrationServers["$index"]=$serialized_data
 
           # increment index
-          let "idx++"
+          echo idx: $idx
+          ((idx=idx+1))
         done
 
         writeJSONArray() {
