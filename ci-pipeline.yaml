@@ -183,8 +183,8 @@ spec:
       runAfter:
         - build-bar
       taskRef:
-        kind: ClusterTask
-        name: buildah
+        kind: Task
+        name: custom-buildah
       workspaces:
         - name: source
           workspace: shared-workspace

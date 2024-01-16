@@ -4,7 +4,7 @@ metadata:
   annotations:
     tekton.dev/pipelines.minVersion: "0.19"
     tekton.dev/tags: image-build
-  name: buildah
+  name: custom-buildah
   labels:
     app.kubernetes.io/version: "0.1"
     operator.tekton.dev/provider-type: redhat
@@ -88,8 +88,8 @@ spec:
           echo "full image name: ${fullImage}"
         done
 
-      securityContext:
-        privileged: true
+      # securityContext:
+      #   privileged: true
       volumeMounts:
         - mountPath: /var/lib/containers
           name: varlibcontainers
