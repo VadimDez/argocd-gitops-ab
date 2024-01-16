@@ -83,7 +83,7 @@ spec:
         deserialize_array ALL_INTEGRATION_SERVER_NAMES allIntegrationServerNames '|'
 
         for name in "${!allIntegrationServerNames[@]}"; do
-          fullImage="${params.IMAGE}/${name}:${(params.changeRequest}"
+          fullImage="$(params.IMAGE)/${name}:$((params.changeRequest)"
 
           echo "full image name: ${fullImage}"
         done
