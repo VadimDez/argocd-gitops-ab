@@ -181,7 +181,6 @@ spec:
         - name: CHANGE_REQUEST
           value: $(params.changeRequest)
       runAfter:
-        - clone-is-infra-repo
         - build-bar
       taskRef:
         kind: ClusterTask
