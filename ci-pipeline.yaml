@@ -185,6 +185,7 @@ spec:
       taskRef:
         kind: Task
         name: custom-buildah
+        resolver: cluster
       workspaces:
         - name: source
           workspace: shared-workspace
