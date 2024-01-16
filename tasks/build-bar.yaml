@@ -57,8 +57,8 @@ spec:
             echo "barsList: ${barsArray[barIndex]}"
 
             deserialize_array barsArray[barIndex] projects ';'
-            declare -p projects
 
+            echo "============"
             for project in "${projects[@]}"; do
                 echo "project in bar list: ${project}"
                 mkdir $(workspaces.workspace.path)/source/${project}
@@ -66,15 +66,16 @@ spec:
                 project_options="--project ${project} ${project_options}"
             done
 
+            echo "============"
+            echo "project_options: ${project_options}"
+
             # list copied folders
+            echo "============"
+            echo "list copied folders:"
             ls $(workspaces.workspace.path)/source
 
-            echo "BAR NAME: $(barNames[barIndex])"
-            echo "=============="
-            echo "bar names:"
-            echo "${barNames[barIndex]}"
-            echo "${barNames[$barIndex]}"
-            echo "=============="
+            echo "============"
+            echo "BAR NAME: ${barNames[barIndex]}"
 
             ibmint package \
               --input-path $(workspaces.workspace.path)/source \
@@ -85,6 +86,8 @@ spec:
           let "index++"
         done
 
+        echo "============"
+        echo "list files:"
         ls $(workspaces.workspace.path)/bars/
   workspaces:
     - name: workspace
