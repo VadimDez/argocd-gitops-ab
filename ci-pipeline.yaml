@@ -184,7 +184,7 @@ spec:
         - build-bar
       taskRef:
         kind: ClusterTask
-        name: buildah
+        name: custom-buildah
       workspaces:
         - name: source
           workspace: shared-workspace
