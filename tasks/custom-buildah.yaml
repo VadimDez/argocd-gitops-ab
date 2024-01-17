@@ -75,6 +75,10 @@ spec:
       env:
         - name: ALL_INTEGRATION_SERVER_NAMES
           value: $(params.allIntegrationServerNames)
+        - name: IMAGE
+          value: $(params.IMAGE)
+        - name: CR
+          value: $(params.changeRequest)
       script: |
         function deserialize_array() {
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
@@ -84,9 +88,10 @@ spec:
 
         deserialize_array ALL_INTEGRATION_SERVER_NAMES allIntegrationServerNames '|'
 
-        for name in "${!allIntegrationServerNames[@]}"; do
-
+        for name in "${allIntegrationServerNames[@]}"; do
           echo "full image name: ${name}"
+          fullImage="$IMAGE/$name:$CR"
+          echo "full image name: ${fullImage}"
         done
 
       # securityContext:
