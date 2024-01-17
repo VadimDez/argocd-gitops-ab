@@ -109,6 +109,19 @@ spec:
           rm -rf ./build-docker/
           mkdir build-docker
           cd build-docker
+          mkdir bars
+
+          echo "Bars: "
+          ls $(workspaces.workspace.path)/bars/
+
+          deserialize_array allBarNames[idx] bars ';'
+          for barName in "${bars[@]}"; do
+            cp $(workspaces.workspace.path)/bars/$barName.bar ./bars/
+          done
+
+          echo "================== bars:"
+          ls ./bars/
+
 
 
         done
