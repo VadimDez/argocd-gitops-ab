@@ -88,10 +88,18 @@ spec:
 
         deserialize_array ALL_INTEGRATION_SERVER_NAMES allIntegrationServerNames '|'
 
+        echo "=================="
+        ls
+
         for name in "${allIntegrationServerNames[@]}"; do
-          echo "full image name: ${name}"
           fullImage="$IMAGE/$name:$CHANGE_REQUEST"
           echo "full image name: ${fullImage}"
+
+
+          buildah --storage-driver=$(params.STORAGE_DRIVER) bud \
+            $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
+            --tls-verify=$(params.TLSVERIFY) --no-cache \
+            -f $(params.DOCKERFILE) -t "$fullImage" $(params.CONTEXT)
         done
 
       # securityContext:
