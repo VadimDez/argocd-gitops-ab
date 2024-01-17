@@ -80,10 +80,12 @@ spec:
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
+        echo "allIntegrationServerNames: $allIntegrationServerNames"
+
         deserialize_array ALL_INTEGRATION_SERVER_NAMES allIntegrationServerNames '|'
 
         for name in "${!allIntegrationServerNames[@]}"; do
-          fullImage="$(params.IMAGE)/${name}:$((params.changeRequest)"
+          fullImage="$(params.IMAGE)/${name}:$(params.changeRequest)"
 
           echo "full image name: ${fullImage}"
         done
