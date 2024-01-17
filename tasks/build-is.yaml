@@ -78,9 +78,6 @@ spec:
         for file in $@; do
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
 
-          yq e -i ".spec.pod.containers.runtime.image = \"${allImageNames[idx]}\"" $integration_server_yaml_path
-
-          cat $integration_server_yaml_path
 
           ((idx=idx+1))
         done
