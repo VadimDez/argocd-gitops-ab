@@ -197,6 +197,8 @@ spec:
           value: $(params.isServerList[*])
         - name: imageNames
           value: $(tasks.build-is-image.results.imageNames)
+        - name: config-repo-dirname
+          value: is-config
       #     - name: is_manifest_template
       #       value: "$(workspaces.input.path)/is-infra/IntegrationServer.yaml"
       #     - name: destination_is_manifest
