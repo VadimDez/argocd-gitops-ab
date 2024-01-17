@@ -22,7 +22,9 @@ spec:
     - description: Reference of the image buildah will produce.
       name: IMAGE
       type: string
-    - default: quay.io/buildah/stable:v1.21.4
+    - default: quay.io/buildah/stable:v1.33.2
+      # - default: >-
+      #     registry.redhat.io/rhel8/buildah@sha256:3c2ea396a114221575a4031d90d28c43563f7b96288374e0ba8b22de3ed97b5a
       description: The location of the buildah builder image.
       name: BUILDER_IMAGE
       type: string
@@ -84,9 +86,8 @@ spec:
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
-        echo "allIntegrationServerNames: $allIntegrationServerNames"
-
         deserialize_array ALL_INTEGRATION_SERVER_NAMES allIntegrationServerNames '|'
+        echo "allIntegrationServerNames: $allIntegrationServerNames"
 
         echo "=================="
         ls
@@ -104,6 +105,10 @@ spec:
 
       # securityContext:
       #   privileged: true
+      securityContext:
+        capabilities:
+          add:
+            - SETFCAP
       volumeMounts:
         - mountPath: /var/lib/containers
           name: varlibcontainers
