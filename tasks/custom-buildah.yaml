@@ -112,11 +112,11 @@ spec:
           mkdir bars
 
           echo "Bars: "
-          ls $(workspaces.workspace.path)/bars/
+          ls $(workspaces.source.path)/bars/
 
           deserialize_array allBarNames[idx] bars ';'
           for barName in "${bars[@]}"; do
-            cp $(workspaces.workspace.path)/bars/$barName.bar ./bars/
+            cp $(workspaces.source.path)/bars/$barName.bar ./bars/
           done
 
           echo "================== bars:"
