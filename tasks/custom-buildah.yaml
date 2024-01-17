@@ -73,6 +73,8 @@ spec:
   results:
     - description: Digest of the image just built.
       name: IMAGE_DIGEST
+    - name: imageNames
+      type: string
   steps:
     - image: $(params.BUILDER_IMAGE)
       name: build
@@ -87,9 +89,18 @@ spec:
         - name: ALL_BAR_NAMES
           value: $(params.allBarNames)
       script: |
+        function serialize_array() {
+          declare -n _array="${1}" _str="${2}" # _array, _str => local reference vars
+          local IFS="${3:-$'\x01'}"
+          # shellcheck disable=SC2034 # Reference vars assumed used by caller
+          _str="${_array[*]}" # * => join on IFS
+        }
+
         function deserialize_array() {
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
+
+        allImageNames=()
 
         deserialize_array ALL_INTEGRATION_SERVER_NAMES allIntegrationServerNames '|'
         echo "allIntegrationServerNames: $allIntegrationServerNames"
@@ -106,6 +117,9 @@ spec:
           echo $name
           fullImage="$IMAGE/$name:$CHANGE_REQUEST"
           echo "full image name: ${fullImage}"
+          allImageNames+=($fullImage)
+
+          # clear old files
           rm -rf ./build-docker/
           mkdir build-docker
           cd build-docker
@@ -122,9 +136,20 @@ spec:
           echo "================== bars:"
           ls ./bars/
 
+          buildah --storage-driver=$(params.STORAGE_DRIVER) bud \
+            $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
+            --tls-verify=$(params.TLSVERIFY) --no-cache \
+            -f $(params.DOCKERFILE) -t "$fullImage" $(params.CONTEXT)
 
-
+          
+          buildah --storage-driver=$(params.STORAGE_DRIVER) push \
+            $(params.PUSH_EXTRA_ARGS) --tls-verify=$(params.TLSVERIFY) \
+            --digestfile $(workspaces.source.path)/image-digest $fullImage \
+            docker://$fullImage
         done
+
+        serialize_array allImageNames serializedImageNamees '|'
+        echo -n $serializedImageNamees > $(results.imageNames.path)
 
       # securityContext:
       #   privileged: true

@@ -4,27 +4,31 @@ metadata:
   name: build-integration-server
 spec:
   params:
-    - name: is_manifest_template
-      type: string
-    - name: destination_is_manifest
-      type: string
-    - name: configurations
-      type: string
-    - name: name
-      type: string
-    - name: license
-      type: string
-    - name: license-use
-      type: string
-    - name: service-endpoint-type
-      type: string
-    - name: image
-      type: string
-    - name: version
-      type: string
-    - name: user-home
-      type: string
-    - name: branch_name
+    # - name: is_manifest_template
+    #   type: string
+    # - name: destination_is_manifest
+    #   type: string
+    # - name: configurations
+    #   type: string
+    # - name: name
+    #   type: string
+    # - name: license
+    #   type: string
+    # - name: license-use
+    #   type: string
+    # - name: service-endpoint-type
+    #   type: string
+    # - name: image
+    #   type: string
+    # - name: version
+    #   type: string
+    # - name: user-home
+    #   type: string
+    # - name: branch_name
+    #   type: string
+    - name: isServerList
+      type: array
+    - name: imageNames
       type: string
   workspaces:
     - name: input
@@ -33,40 +37,47 @@ spec:
       image: image-registry.openshift-image-registry.svc:5000/vadym/sh-tools
       workingDir: $(workspaces.input.path)
       env:
-        - name: IS_MANIFEST_TEMPLATE
-          value: $(params.is_manifest_template)
-        - name: DESTINATION_IS_MANIFEST
-          value: $(params.destination_is_manifest)
-        - name: NAME
-          value: $(params.name)
-        - name: LICENSE
-          value: $(params.license)
-        - name: LICENSE_USE
-          value: $(params.license-use)
-        - name: SERVICE_ENDPOINT_TYPE
-          value: $(params.service-endpoint-type)
-        - name: IMAGE
-          value: $(params.image)
-        - name: CONFIGURATIONS
-          value: $(params.configurations)
-        - name: VERSION
-          value: $(params.version)
+        - name: ALL_IMAGE_NAMES
+          value: $(params.imageNames)
+      # - name: IS_MANIFEST_TEMPLATE
+      #   value: $(params.is_manifest_template)
+      # - name: DESTINATION_IS_MANIFEST
+      #   value: $(params.destination_is_manifest)
+      # - name: NAME
+      #   value: $(params.name)
+      # - name: LICENSE
+      #   value: $(params.license)
+      # - name: LICENSE_USE
+      #   value: $(params.license-use)
+      # - name: SERVICE_ENDPOINT_TYPE
+      #   value: $(params.service-endpoint-type)
+      # - name: IMAGE
+      #   value: $(params.image)
+      # - name: CONFIGURATIONS
+      #   value: $(params.configurations)
+      # - name: VERSION
+      #   value: $(params.version)
+      args:
+        - $(params.isServerList[*])
       script: |
         #!/usr/bin/env bash
 
-        ls $(workspaces.input.path)
-
-        function create_integration_server() {
-          envsubst < ${IS_MANIFEST_TEMPLATE} > ${DESTINATION_IS_MANIFEST}
-
-          for configuration in ${CONFIGURATIONS} ; do
-            config=$configuration yq e -i '.spec.configurations = (.spec.configurations // []) + env(config)' ${DESTINATION_IS_MANIFEST}
-          done
+        function deserialize_array() {
+          IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
         }
 
-        if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-          create_integration_server
-        fi
+        deserialize_array ALL_IMAGE_NAMES allImageNames '|'
 
-        ls $(workspaces.input.path)
-        cat $DESTINATION_IS_MANIFEST
+        echo "=================="
+        echo "All image names: ${allImageNames[@]}"
+
+        idx=0
+        for file in $@; do
+          integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
+
+          yq e -i ".spec.pod.containers.runtime.image = \"${allImageNames[idx]}\"" $integration_server_yaml_path
+
+          cat $integration_server_yaml_path
+
+          ((idx=idx+1))
+        done
