@@ -180,6 +180,8 @@ spec:
           value: $(tasks.get-projects-to-clone.results.integrationServerNames)
         - name: CHANGE_REQUEST
           value: $(params.changeRequest)
+        - name: allBarNames
+          value: $(tasks.get-projects-to-clone.results.barNames)
       runAfter:
         - build-bar
       taskRef:
