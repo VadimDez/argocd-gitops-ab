@@ -66,6 +66,9 @@ spec:
       type: string
       default: ""
       description: Change request name
+    - name: allBarNames
+      type: string
+      description: array of arrays - list of bars
 
   results:
     - description: Digest of the image just built.
@@ -81,6 +84,8 @@ spec:
           value: $(params.IMAGE)
         - name: CHANGE_REQUEST
           value: $(params.CHANGE_REQUEST)
+        - name: ALL_BAR_NAMES
+          value: $(params.allBarNames)
       script: |
         function deserialize_array() {
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
@@ -89,25 +94,23 @@ spec:
         deserialize_array ALL_INTEGRATION_SERVER_NAMES allIntegrationServerNames '|'
         echo "allIntegrationServerNames: $allIntegrationServerNames"
 
+        deserialize_array ALL_BAR_NAMES allBarNames '|'
+        echo "allBarNames: ${allBarNames[@]}"
+
         echo "=================="
         ls
 
-        for name in "${allIntegrationServerNames[@]}"; do
+        for idx in "${!allIntegrationServerNames[@]}"; do
+          echo "=================="
+          name="${allIntegrationServerNames[$idx]}"
+          echo $name
           fullImage="$IMAGE/$name:$CHANGE_REQUEST"
           echo "full image name: ${fullImage}"
+          rm -rf ./build-docker/
+          mkdir build-docker
+          cd build-docker
 
 
-          buildah --storage-driver=$(params.STORAGE_DRIVER) bud \
-            $(params.BUILD_EXTRA_ARGS) --format=$(params.FORMAT) \
-            --tls-verify=$(params.TLSVERIFY) --no-cache \
-            -f $(params.DOCKERFILE) -t "$fullImage" $(params.CONTEXT)
-
-
-          
-          buildah --storage-driver=$(params.STORAGE_DRIVER) push \
-            $(params.PUSH_EXTRA_ARGS) --tls-verify=$(params.TLSVERIFY) \
-            --digestfile $(workspaces.source.path)/image-digest $fullImage \
-            docker://$fullImage
         done
 
       # securityContext:
