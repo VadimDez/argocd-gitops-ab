@@ -230,28 +230,30 @@ spec:
         - name: input
           workspace: shared-workspace
 
-    # - name: nexus-upload
-    #   params:
-    #     - name: nexus-user
-    #       value: $(params.nexus-user)
-    #     - name: nexus-password
-    #       value: $(params.nexus-password)
-    #     - name: nexus-url
-    #       value: $(params.nexus-url)
-    #     - name: nexus-repo
-    #       value: $(params.nexus-repo)
-    #     - name: configurations
-    #       value: $(tasks.resolve-props.results.is-configurations)
-    #     - name: destination_is_manifest
-    #       value: "$(workspaces.workspace.path)/integrationServer-$(tasks.resolve-props.results.is-release-name).yaml"
-    #     - name: is-infra-directory
-    #       value: "$(workspaces.workspace.path)/is-infra"
+    - name: nexus-upload
+      params:
+        - name: nexus-user
+          value: $(params.nexus-user)
+        - name: nexus-password
+          value: $(params.nexus-password)
+        - name: nexus-url
+          value: $(params.nexus-url)
+        - name: nexus-repo
+          value: $(params.nexus-repo)
+        # - name: configurations
+        #   value: $(tasks.resolve-props.results.is-configurations)
+        - name: is-infra-directory
+          value: "$(workspaces.workspace.path)/is-infra"
+        - name: config-repo-dirname
+          value: is-config
+        - name: isServerList
+          value: $(params.isServerList[*])
 
-    #   taskRef:
-    #     kind: Task
-    #     name: nexus-upload
-    #   runAfter:
-    #     - build-integration-server
-    #   workspaces:
-    #     - name: workspace
-    #       workspace: shared-workspace
+      taskRef:
+        kind: Task
+        name: nexus-upload
+      runAfter:
+        - build-integration-server
+      workspaces:
+        - name: workspace
+          workspace: shared-workspace

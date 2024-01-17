@@ -28,15 +28,16 @@ spec:
       description: "Nexus Folder"
       default: vadym
       type: string
-    - name: configurations
-      description: "Configurations path"
-      type: string
-    - name: destination_is_manifest
-      description: "Integration Server yaml path"
-      type: string
+    # - name: configurations
+    #   description: "Configurations path"
+    #   type: string
     - name: is-infra-directory
       description: "IS-INFRA folder"
       type: string
+    - name: config-repo-dirname
+      type: string
+    - name: isServerList
+      type: array
 
   steps:
     - name: curl
@@ -51,25 +52,29 @@ spec:
           value: $(params.nexus-url)
         - name: NEXUS_REPO
           value: $(params.nexus-repo)
-        - name: CONFIGURATIONS
-          value: $(params.configurations)
-        - name: DESTINATION_IS_MANIFEST
-          value: $(params.destination_is_manifest)
+        # - name: CONFIGURATIONS
+        #   value: $(params.configurations)
         - name: IS_INFRA_DIRECTORY
           value: $(params.is-infra-directory)
+        - name: CONFIG_DIRECTORY
+          value: $(params.config-repo-dirname)
+      args:
+        - $(params.isServerList[*])
       script: |
         #!/bin/sh
 
-        echo $CONFIGURATIONS
+        # echo $CONFIGURATIONS
 
         echo "==================================="
         ls
         echo "==================================="
 
-        echo $DESTINATION_IS_MANIFEST
-        echo "==================================="
+        # upload bars
         curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ./bars/* "${NEXUS_URL}/repository/${NEXUS_REPO}/bars/"
-        curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "${DESTINATION_IS_MANIFEST}" "${NEXUS_URL}/repository/${NEXUS_REPO}/integrationServers/"
+        # upload integration server yamls
+        for file in $@; do
+          curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "./${CONFIG_DIRECTORY}/${file}" "${NEXUS_URL}/repository/${NEXUS_REPO}/integrationServers/"
+        done
 
         #for configuration in ${CONFIGURATIONS} ; do
         #  echo $configuration
