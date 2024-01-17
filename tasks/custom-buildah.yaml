@@ -77,8 +77,8 @@ spec:
           value: $(params.allIntegrationServerNames)
         - name: IMAGE
           value: $(params.IMAGE)
-        - name: CR
-          value: $(params.changeRequest)
+        - name: CHANGE_REQUEST
+          value: $(params.CHANGE_REQUEST)
       script: |
         function deserialize_array() {
           IFS="${3:-$'\x01'}" read -r -a "${2}" <<<"${!1}" # -a => split on IFS
@@ -90,7 +90,7 @@ spec:
 
         for name in "${allIntegrationServerNames[@]}"; do
           echo "full image name: ${name}"
-          fullImage="$IMAGE/$name:$CR"
+          fullImage="$IMAGE/$name:$CHANGE_REQUEST"
           echo "full image name: ${fullImage}"
         done
 
