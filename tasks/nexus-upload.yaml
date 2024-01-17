@@ -38,6 +38,8 @@ spec:
       type: string
     - name: isServerList
       type: array
+    - name: CHANGE_REQUEST
+      type: string
 
   steps:
     - name: curl
@@ -58,6 +60,8 @@ spec:
           value: $(params.is-infra-directory)
         - name: CONFIG_DIRECTORY
           value: $(params.config-repo-dirname)
+        - name: CHANGE_REQUEST
+          value: $(params.CHANGE_REQUEST)
       args:
         - $(params.isServerList[*])
       script: |
@@ -70,10 +74,10 @@ spec:
         echo "==================================="
 
         # upload bars
-        curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ./bars/* "${NEXUS_URL}/repository/${NEXUS_REPO}/bars/"
+        curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file ./bars/* "${NEXUS_URL}/repository/${NEXUS_REPO}/${CHANGE_REQUEST}/bars/"
         # upload integration server yamls
         for file in $@; do
-          curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "./${CONFIG_DIRECTORY}/${file}" "${NEXUS_URL}/repository/${NEXUS_REPO}/integrationServers/"
+          curl -v -u "${NEXUS_USER}:${NEXUS_PASSWORD}" --upload-file "./${CONFIG_DIRECTORY}/${file}" "${NEXUS_URL}/repository/${NEXUS_REPO}/${CHANGE_REQUEST}/integrationServers/"
         done
 
         #for configuration in ${CONFIGURATIONS} ; do

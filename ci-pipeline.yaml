@@ -248,6 +248,8 @@ spec:
           value: is-config
         - name: isServerList
           value: $(params.isServerList[*])
+        - name: CHANGE_REQUEST
+          value: $(params.changeRequest)
 
       taskRef:
         kind: Task
