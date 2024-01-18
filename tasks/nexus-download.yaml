@@ -28,6 +28,9 @@ spec:
       description: "Nexus Folder"
       default: vadym
       type: string
+    - name: CHANGE_REQUEST
+      description: "Change request value"
+      type: string
 
   steps:
     - name: curl
@@ -42,6 +45,8 @@ spec:
           value: $(params.nexus-url)
         - name: NEXUS_REPO
           value: $(params.nexus-repo)
+        - name: CHANGE_REQUEST
+          value: $(params.CHANGE_REQUEST)
       script: |
         #!/bin/sh
 
@@ -51,7 +56,7 @@ spec:
         ls
         echo "BEFORE ==================================="
         # Loop through each file in the Nexus directory and download
-        for file in $(curl -s -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -X GET "${NEXUS_URL}/service/rest/v1/components/?repository=${NEXUS_REPO}" | grep -o '"downloadUrl" *: *"[^"]*"' | sed 's/^.*: "\(.*\)".*$/\1/'); do
+        for file in $(curl -s -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -X GET "${NEXUS_URL}/service/rest/v1/components/?repository=${NEXUS_REPO}" | grep -o '"downloadUrl" *: *"[^"]*"' | sed 's/^.*: "\(.*\)".*$/\1/' | sed -n "/\/${NEXUS_REPO}\/${CHANGE_REQUEST}/p"); do
             echo $file
             filename=$(basename "${file}")
             

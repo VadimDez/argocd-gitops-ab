@@ -24,6 +24,10 @@ spec:
       default: vadym
       type: string
 
+    - name: changeRequest
+      description: "Change request"
+      type: string
+
   workspaces:
     - name: shared-workspace
 
@@ -38,6 +42,8 @@ spec:
           value: $(params.nexus-url)
         - name: nexus-repo
           value: $(params.nexus-repo)
+        - name: CHANGE_REQUEST
+          value: $(params.changeRequest)
 
       taskRef:
         kind: Task
