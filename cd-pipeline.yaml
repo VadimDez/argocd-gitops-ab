@@ -53,6 +53,9 @@ spec:
           workspace: shared-workspace
 
     - name: apply-resources
+      params:
+        - name: CHANGE_REQUEST
+          value: $(params.changeRequest)
       runAfter:
         - nexus-download
       taskRef:

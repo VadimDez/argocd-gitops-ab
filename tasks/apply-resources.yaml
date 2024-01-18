@@ -13,19 +13,29 @@ spec:
   description: >-
     This task performs deployes all resources
 
+  params:
+    - name: CHANGE_REQUEST
+      description: "Change request value"
+      type: string
+
   steps:
     - name: apply
       image: quay.io/openshift/origin-cli:latest
       workingDir: $(workspaces.workspace.path)
+      env:
+        - name: CHANGE_REQUEST
+          value: $(params.CHANGE_REQUEST)
       script: |
         #!/bin/sh
 
         echo "==================================="
 
-        cd CR01
+        cd $CHANGE_REQUEST
 
+        echo "List files in CR directory:"
         ls
 
+        echo "Apply integration servers:"
         oc apply -f ./integrationServers/
 
   workspaces:

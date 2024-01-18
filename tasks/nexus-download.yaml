@@ -50,9 +50,9 @@ spec:
       script: |
         #!/bin/sh
 
-        rm -rf CR01
-        mkdir CR01
-        cd CR01
+        rm -rf $CHANGE_REQUEST
+        mkdir $CHANGE_REQUEST
+        cd $CHANGE_REQUEST
         ls
         echo "BEFORE ==================================="
         # Loop through each file in the Nexus directory and download
