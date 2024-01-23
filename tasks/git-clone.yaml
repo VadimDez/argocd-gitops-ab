@@ -89,9 +89,9 @@ spec:
         #!/bin/sh
         set -eu -o pipefail
 
-        if [[ "$(params.verbose)" == "true" ]] ; then
-          set -x
-        fi
+        # if [[ "$(params.verbose)" == "true" ]] ; then
+        #   set -x
+        # fi
 
         if [[ "$(params.sshPrivateKey)" != "" ]] ; then
           eval `ssh-agent`
