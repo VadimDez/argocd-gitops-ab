@@ -15,7 +15,7 @@ spec:
           apk del yq && \
           apk --no-cache add --update zip sed bash coreutils gettext
 
-      ARG VERSION=v4.7.1
+      ARG VERSION=v4.40.5
       ARG BINARY=yq_linux_amd64
 
       RUN wget  https://github.com/mikefarah/yq/releases/download/$VERSION/$BINARY -O /usr/bin/yq &&\
