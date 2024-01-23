@@ -59,6 +59,7 @@ spec:
   workspaces:
     - name: shared-workspace
     - name: app-repo-secret
+    - name: config-ssh-secret
     - name: infra-repo-secret
 
   tasks:
@@ -76,6 +77,8 @@ spec:
       workspaces:
         - name: output
           workspace: shared-workspace
+        - name: ssh-directory
+          workspace: config-ssh-secret
 
     - name: get-projects-to-clone
       params:
