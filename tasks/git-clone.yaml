@@ -87,7 +87,7 @@ spec:
           value: $(workspaces.ssh-directory.path)
       script: |
         #!/bin/sh
-        set -eu -o pipefail
+        # set -eu -o pipefail
 
         # if [[ "$(params.verbose)" == "true" ]] ; then
         #   set -x
@@ -98,6 +98,7 @@ spec:
           ssh-add ~/.ssh/$(params.sshPrivateKey)
         fi
 
+        echo "${WORKSPACE_SSH_DIRECTORY_BOUND} ${WORKSPACE_SSH_DIRECTORY_PATH}"
         if [ "${WORKSPACE_SSH_DIRECTORY_BOUND}" = "true" ] ; then
           echo "BEFORE: ====================="
           ls ~/.ssh
