@@ -17,7 +17,7 @@ spec:
 
     - name: config-repo-url
       type: string
-      default: https://github.com/VadimDez/config-repo-ab.git
+      default: git@github.com:VadimDez/config-repo-ab.git
       description: "SSH url of Configuration repository"
 
     - name: app-repo-private-key
