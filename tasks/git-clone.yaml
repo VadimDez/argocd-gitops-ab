@@ -99,6 +99,23 @@ spec:
         fi
 
         echo "${WORKSPACE_SSH_DIRECTORY_BOUND} ${WORKSPACE_SSH_DIRECTORY_PATH}"
+        if [ "${WORKSPACE_SSH_DIRECTORY_BOUND}" = "true" ] ; then
+          echo "BEFORE: ====================="
+          ls ~/.ssh
+          cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" ~/.ssh
+
+          cat ~/.ssh/id_rsa
+
+          echo "AFTER: ====================="
+          ls ~/.ssh
+
+          chmod 700 "${PARAM_USER_HOME}"/.ssh
+          chmod -R 400 "${PARAM_USER_HOME}"/.ssh/*
+
+          eval "$(ssh-agent -s)"
+
+          ssh-add ~/.ssh/id_rsa
+        fi
 
         CHECKOUT_DIR="$(workspaces.output.path)/$(params.subdirectory)"
 
