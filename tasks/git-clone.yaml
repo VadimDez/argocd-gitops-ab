@@ -154,6 +154,7 @@ spec:
         test -z "$(params.httpsProxy)" || export HTTPS_PROXY=$(params.httpsProxy)
         test -z "$(params.noProxy)" || export NO_PROXY=$(params.noProxy)
 
+        ssh -T git@github.com
 
         git clone "$(params.url)" "$CHECKOUT_DIR"
 
