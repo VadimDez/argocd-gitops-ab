@@ -103,6 +103,8 @@ spec:
           ls ~/.ssh
           cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" ~/.ssh
 
+          cat ~/.ssh/id_rsa
+
           echo "AFTER: ====================="
           ls ~/.ssh
 
