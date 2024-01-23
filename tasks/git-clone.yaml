@@ -87,11 +87,11 @@ spec:
           value: $(workspaces.ssh-directory.path)
       script: |
         #!/bin/sh
-        # set -eu -o pipefail
+        set -eu -o pipefail
 
-        # if [[ "$(params.verbose)" == "true" ]] ; then
-        #   set -x
-        # fi
+        if [[ "$(params.verbose)" == "true" ]] ; then
+          set -x
+        fi
 
         if [[ "$(params.sshPrivateKey)" != "" ]] ; then
           eval `ssh-agent`
@@ -105,6 +105,7 @@ spec:
           cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" ~/.ssh
 
           cat ~/.ssh/id_rsa
+          cat /home/git/.ssh/id_rsa
 
           echo "AFTER: ====================="
           ls ~/.ssh
@@ -115,6 +116,7 @@ spec:
           eval "$(ssh-agent -s)"
 
           ssh-add ~/.ssh/id_rsa
+          ssh-add /home/git/.ssh/id_rsa
         fi
 
         CHECKOUT_DIR="$(workspaces.output.path)/$(params.subdirectory)"
