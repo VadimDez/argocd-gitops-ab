@@ -63,7 +63,7 @@ spec:
       description: log the commands used during execution
       name: verbose
       type: string
-    - default: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.18.0
+    - default: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.40.2
       description: the image used where the git-init binary is
       name: gitInitImage
       type: string
