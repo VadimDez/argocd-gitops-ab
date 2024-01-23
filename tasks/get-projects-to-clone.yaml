@@ -69,9 +69,9 @@ spec:
           barsYAML=$(yq eval '.metadata.annotations.ab-bars-yaml' "$integration_server_yaml_path" | yq eval '.')
           extract_all_projects "$barsYAML"
 
-          imageName=$(yq e '.metadata.annotations.ab-image-name' "$yaml_file" 2>/dev/null)
+          imageName=$(yq e '.metadata.annotations.ab-image-name' "$integration_server_yaml_path" 2>/dev/null)
 
-          integrationServerName=$(yq e '.metadata.name' "$yaml_file" 2>/dev/null)
+          integrationServerName=$(yq e '.metadata.name' "$integration_server_yaml_path" 2>/dev/null)
           allintegrationservers+=($integrationServerName)
 
           # get bars for for specific yaml file
