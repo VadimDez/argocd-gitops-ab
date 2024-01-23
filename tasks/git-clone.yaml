@@ -105,9 +105,13 @@ spec:
 
           echo "AFTER: ====================="
           ls ~/.ssh
-          
+
           chmod 700 "${PARAM_USER_HOME}"/.ssh
           chmod -R 400 "${PARAM_USER_HOME}"/.ssh/*
+
+          eval "$(ssh-agent -s)"
+
+          ssh-add ~/.ssh/id_rsa
         fi
 
         CHECKOUT_DIR="$(workspaces.output.path)/$(params.subdirectory)"

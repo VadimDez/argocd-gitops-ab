@@ -55,3 +55,7 @@ cyhxer-1pykPy-dypham
 ```
 oc exec vadym-nexusrepo-sonatype-nexus-7f7c79dfc-8t5jc -n vadym -- cat /nexus-data/admin.password
 ```
+
+### Git auth
+
+https://tekton.dev/docs/pipelines/auth/#configuring-ssh-auth-authentication-for-git
