@@ -47,11 +47,11 @@ spec:
         }
 
         extract_all_projects() {
-          yaml_file=$1
-          new_projects=$(yq e '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" 2>/dev/null)
+          yaml="$1"
+          new_projects=$(echo "$yaml" | yq e '.[].projects[]')
           
           echo "==========================="
-          newProjects=($(yq eval '.metadata.annotations.ab-bars[].projects[]' "$yaml_file" | tr '\n' ',' | sed 's/,$//'))
+          newProjects=($(echo "$yaml" | yq eval '.[].projects[]' | tr '\n' ',' | sed 's/,$//'))
           echo -n $newProjects
           echo "==========================="
 
@@ -66,7 +66,8 @@ spec:
         idx=0
         for file in $@; do
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
-          extract_all_projects $integration_server_yaml_path
+          barsYAML=$(yq eval '.metadata.annotations.ab-bars-yaml' "$integration_server_yaml_path" | yq eval '.')
+          extract_all_projects "$barsYAML"
 
           imageName=$(yq e '.metadata.annotations.ab-image-name' "$yaml_file" 2>/dev/null)
 
@@ -74,7 +75,7 @@ spec:
           allintegrationservers+=($integrationServerName)
 
           # get bars for for specific yaml file
-          bars=($(yq e '.metadata.annotations.ab-bars[].bar-name' "$yaml_file" 2>/dev/null))
+          bars=($(echo "$barsYAML" | yq e '.[].bar-name' 2>/dev/null))
           echo "BARS: ${bars[@]}"
           # create a array string separated by ;
           serialize_array bars serializedBars ';'
@@ -84,7 +85,7 @@ spec:
 
           # loop over bars
           for i in "${!bars[@]}"; do
-            projects=($(yq e ".metadata.annotations.ab-bars[$i].projects | join(\";\")" "$yaml_file" 2>/dev/null))
+            projects=($(echo "$barsYAML" | yq e ".[$i].projects | join(\";\")" 2>/dev/null))
             allBars["$i"]=${projects[@]}
           done
 
