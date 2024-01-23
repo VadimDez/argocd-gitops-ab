@@ -68,7 +68,7 @@ spec:
             # Create directories locally if they don't exist
             mkdir -p "$(workspaces.workspace.path)/$(dirname "${relative_path}")"
 
-            curl -u "${NEXUS_USER}:${NEXUS_PASSWORD}"  -o "${relative_path}" -O -J -L "${file}"
+            curl -u "${NEXUS_USER}:${NEXUS_PASSWORD}"  -o "$(workspaces.workspace.path)/${relative_path}" -O -J -L "${file}"
         done
         echo "AFTER ==================================="
         ls
