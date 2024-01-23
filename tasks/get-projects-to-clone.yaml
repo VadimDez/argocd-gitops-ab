@@ -66,7 +66,7 @@ spec:
         idx=0
         for file in $@; do
           integration_server_yaml_path="$(workspaces.input.path)/$(params.config-repo-dirname)/$file"
-          barsYAML=$(yq eval '.metadata.annotations.ab-bars-yaml' "$integration_server_yaml_path")
+          barsYAML=$(yq eval '.metadata.annotations.ab-bars-yaml' "$integration_server_yaml_path" | yq  .)
           extract_all_projects "$barsYAML"
 
           imageName=$(yq e '.metadata.annotations.ab-image-name' "$yaml_file" 2>/dev/null)
