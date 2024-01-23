@@ -112,8 +112,6 @@ spec:
 
         echo "${WORKSPACE_SSH_DIRECTORY_BOUND} ${WORKSPACE_SSH_DIRECTORY_PATH}"
         if [ "${WORKSPACE_SSH_DIRECTORY_BOUND}" = "true" ] ; then
-          echo "BEFORE: ====================="
-          ls "${PARAM_USER_HOME}"/.ssh
           cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" "${PARAM_USER_HOME}"/.ssh
 
           cat "${PARAM_USER_HOME}"/.ssh/id_rsa
