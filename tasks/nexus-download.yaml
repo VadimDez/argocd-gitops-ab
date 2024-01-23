@@ -64,6 +64,8 @@ spec:
             relative_path=$(echo "$file" | sed "s|$NEXUS_URL/repository/$NEXUS_REPO/$CHANGE_REQUEST||")
 
             echo "relative path: $relative_path"
+
+            echo "$(workspaces.workspace.path)/$(dirname "${relative_path}")"
             
             # Create directories locally if they don't exist
             mkdir -p "$(workspaces.workspace.path)/$(dirname "${relative_path}")"
@@ -71,6 +73,6 @@ spec:
             curl -u "${NEXUS_USER}:${NEXUS_PASSWORD}"  -o "$(workspaces.workspace.path)/${relative_path}" -O -J -L "${file}"
         done
         echo "AFTER ==================================="
-        ls
+        ls $(workspaces.workspace.path)
   workspaces:
     - name: workspace
