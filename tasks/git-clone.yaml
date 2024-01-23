@@ -71,6 +71,11 @@ spec:
       description: the private key to use
       name: sshPrivateKey
       type: string
+    - name: userHome
+      description: |
+        Absolute path to the user's home directory.
+      type: string
+      default: "/home/git"
   results:
     - description: The precise commit SHA that was fetched by this Task
       name: commit
@@ -81,10 +86,17 @@ spec:
       name: clone
       resources: {}
       env:
+        - name: HOME
+          value: "$(params.userHome)"
+        - name: PARAM_USER_HOME
+          value: $(params.userHome)
         - name: WORKSPACE_SSH_DIRECTORY_BOUND
           value: $(workspaces.ssh-directory.bound)
         - name: WORKSPACE_SSH_DIRECTORY_PATH
           value: $(workspaces.ssh-directory.path)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
       script: |
         #!/bin/sh
         set -eu -o pipefail
@@ -101,20 +113,20 @@ spec:
         echo "${WORKSPACE_SSH_DIRECTORY_BOUND} ${WORKSPACE_SSH_DIRECTORY_PATH}"
         if [ "${WORKSPACE_SSH_DIRECTORY_BOUND}" = "true" ] ; then
           echo "BEFORE: ====================="
-          ls ~/.ssh
-          cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" ~/.ssh
+          ls "${PARAM_USER_HOME}"/.ssh
+          cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" "${PARAM_USER_HOME}"/.ssh
 
-          cat ~/.ssh/id_rsa
+          cat "${PARAM_USER_HOME}"/.ssh/id_rsa
 
           echo "AFTER: ====================="
-          ls ~/.ssh
+          ls "${PARAM_USER_HOME}"/.ssh
 
           chmod 700 "${PARAM_USER_HOME}"/.ssh
           chmod -R 400 "${PARAM_USER_HOME}"/.ssh/*
 
           eval "$(ssh-agent -s)"
 
-          ssh-add ~/.ssh/id_rsa
+          ssh-add  "${PARAM_USER_HOME}"/.ssh/id_rsa
         fi
 
         CHECKOUT_DIR="$(workspaces.output.path)/$(params.subdirectory)"
