@@ -7,7 +7,7 @@ spec:
   params:
     - name: app-repo-url
       type: string
-      default: https://github.com/VadimDez/apps-ab.git
+      default: git@github.com:VadimDez/apps-ab.git
       description: "SSH url of ACE source repository, ex: git@github.com:ace-prod-ref/create-customer.git"
 
     - name: is-infra-repo-url
@@ -113,7 +113,7 @@ spec:
       workspaces:
         - name: output
           workspace: shared-workspace
-        - name: app-repo-secret
+        - name: ssh-directory
           workspace: app-repo-secret
 
     - name: clone-is-infra-repo
