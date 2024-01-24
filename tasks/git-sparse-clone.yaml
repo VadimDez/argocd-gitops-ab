@@ -84,6 +84,11 @@ spec:
     - image: $(params.gitInitImage)
       name: clone
       resources: {}
+      env:
+        - name: WORKSPACE_SSH_DIRECTORY_BOUND
+          value: $(workspaces.ssh-directory.bound)
+        - name: WORKSPACE_SSH_DIRECTORY_PATH
+          value: $(workspaces.ssh-directory.path)
       args:
         - $(params.foldersToClone[*])
       script: |
@@ -97,6 +102,18 @@ spec:
         if [[ "$(params.sshPrivateKey)" != "" ]] ; then
           eval `ssh-agent`
           ssh-add ~/.ssh/$(params.sshPrivateKey)
+        fi
+
+        echo "${WORKSPACE_SSH_DIRECTORY_BOUND} ${WORKSPACE_SSH_DIRECTORY_PATH}"
+        if [ "${WORKSPACE_SSH_DIRECTORY_BOUND}" = "true" ] ; then
+          cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" ~/.ssh
+
+          chmod 700 ~/.ssh
+          chmod -R 400 ~/.ssh/*
+
+          eval "$(ssh-agent -s)"
+
+          ssh-add  ~/.ssh/id_ed25519
         fi
 
         CHECKOUT_DIR="$(workspaces.output.path)/$(params.subdirectory)"
@@ -156,4 +173,10 @@ spec:
   workspaces:
     - description: The git repo will be cloned onto the volume backing this workspace
       name: output
-    - name: app-repo-secret
+    - name: ssh-directory
+      optional: true
+      description: |
+        A .ssh directory with private key, known_hosts, config, etc. Copied to
+        the user's home before git commands are executed. Used to authenticate
+        with the git remote when performing the clone. Binding a Secret to this
+        Workspace is strongly recommended over other volume types.
