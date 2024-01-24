@@ -12,7 +12,7 @@ spec:
 
     - name: is-infra-repo-url
       type: string
-      default: https://github.com/VadimDez/ace-infra.git
+      default: git@github.com:VadimDez/ace-infra.git
       description: "SSH url of Infrastructure repository, ex: git@github.com:ace-prod-ref/ace-infra.git"
 
     - name: config-repo-url
