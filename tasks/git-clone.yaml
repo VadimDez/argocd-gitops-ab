@@ -154,18 +154,14 @@ spec:
         test -z "$(params.httpsProxy)" || export HTTPS_PROXY=$(params.httpsProxy)
         test -z "$(params.noProxy)" || export NO_PROXY=$(params.noProxy)
 
-        ssh -T git@github.com
-
-        git clone "$(params.url)" "$CHECKOUT_DIR"
-
-        # /ko-app/git-init \
-        #   -url "$(params.url)" \
-        #   -revision "$(params.revision)" \
-        #   -refspec "$(params.refspec)" \
-        #   -path "$CHECKOUT_DIR" \
-        #   -sslVerify="$(params.sslVerify)" \
-        #   -submodules="$(params.submodules)" \
-        #   -depth "$(params.depth)"
+        /ko-app/git-init \
+          -url "$(params.url)" \
+          -revision "$(params.revision)" \
+          -refspec "$(params.refspec)" \
+          -path "$CHECKOUT_DIR" \
+          -sslVerify="$(params.sslVerify)" \
+          -submodules="$(params.submodules)" \
+          -depth "$(params.depth)"
         cd "$CHECKOUT_DIR"
         RESULT_SHA="$(git rev-parse HEAD)"
         EXIT_CODE="$?"
