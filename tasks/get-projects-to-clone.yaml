@@ -13,6 +13,8 @@ spec:
   results:
     - name: projects
       type: array
+    - name: imageNames
+      type: string
     - name: integrationServerNames
       type: string
     - name: barNames
@@ -30,6 +32,7 @@ spec:
 
         bash --version
 
+        allImageNames=()
         allintegrationservers=()
         declare -a integrationServers=()
         allProjects=()
@@ -70,6 +73,7 @@ spec:
           extract_all_projects "$barsYAML"
 
           imageName=$(yq e '.metadata.annotations.ab-image-name' "$integration_server_yaml_path" 2>/dev/null)
+          allImageNames+=($imageName)
 
           integrationServerName=$(yq e '.metadata.name' "$integration_server_yaml_path" 2>/dev/null)
           allintegrationservers+=($integrationServerName)
@@ -115,6 +119,8 @@ spec:
 
         writeJSONArray $(results.projects.path) "${allProjects[@]}"
 
+        serialize_array allImageNames serializedImageNames '|'
+        echo -n $serializedImageNames > $(results.imageNames.path)
         serialize_array allintegrationservers serializedIntegrationServerNames '|'
         echo -n $serializedIntegrationServerNames > $(results.integrationServerNames.path)
         serialize_array allBarNames serializedAllBarNames '|'

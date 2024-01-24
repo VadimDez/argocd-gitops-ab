@@ -179,6 +179,8 @@ spec:
           value: $(workspaces.source.path)/is-infra/Dockerfile
         - name: CONTEXT
           value: $(workspaces.source.path)/bars
+        - name: allImageNames
+          value: $(tasks.get-projects-to-clone.results.imageNames)
         - name: allIntegrationServerNames
           value: $(tasks.get-projects-to-clone.results.integrationServerNames)
         - name: CHANGE_REQUEST
