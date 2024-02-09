@@ -167,11 +167,14 @@ spec:
           add:
             - SETFCAP
       volumeMounts:
-        - mountPath: /var/lib/containers
-          name: varlibcontainers
+        - name: varlibcontainers
+          mountPath: /var/lib/containers
       workingDir: $(workspaces.source.path)
   volumes:
-    - emptyDir: {}
-      name: varlibcontainers
+    - name: varlibcontainers
+      persistentVolumeClaim:
+        claimName: buildah-cache
+    # - emptyDir: {}
+    #   name: varlibcontainers
   workspaces:
     - name: source
