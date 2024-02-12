@@ -84,8 +84,8 @@ spec:
       name: build
       resources:
         limits:
-          cpu: 2000m
-          memory: 2000Mi
+          cpu: 600m
+          memory: 1400Mi
         requests:
           cpu: 500m
           memory: 712Mi
