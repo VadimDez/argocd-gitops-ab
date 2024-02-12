@@ -1,0 +1,16 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: custom-ace
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: custom-ace:latest
+  source:
+    dockerfile: |
+      FROM cp.icr.io/cp/appc/ace-server-prod@sha256:1753d66293e51d8453acceb5194a8816fd9010caec7c770d07e6623b10fd3976
+  strategy:
+    type: Docker
+  triggers:
+    - type: ConfigChange
