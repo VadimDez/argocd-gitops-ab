@@ -82,7 +82,13 @@ spec:
   steps:
     - image: $(params.BUILDER_IMAGE)
       name: build
-      resources: {}
+      resources:
+        limits:
+          cpu: 600m
+          memory: 600Mi
+        requests:
+          cpu: 600m
+          memory: 600Mi
       env:
         - name: ALL_IMAGE_NAMES
           value: $(params.allImageNames)

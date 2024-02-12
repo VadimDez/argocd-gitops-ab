@@ -37,13 +37,6 @@ spec:
   steps:
     - name: create-custom-resource
       image: image-registry.openshift-image-registry.svc:5000/vadym/sh-tools
-      resources:
-        limits:
-          cpu: 600m
-          memory: 600Mi
-        requests:
-          cpu: 600m
-          memory: 600Mi
       workingDir: $(workspaces.input.path)
       env:
         - name: ALL_IMAGE_NAMES
