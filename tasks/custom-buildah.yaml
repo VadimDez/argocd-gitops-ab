@@ -85,10 +85,10 @@ spec:
       resources:
         limits:
           cpu: 600m
-          memory: 600Mi
+          memory: 1400Mi
         requests:
-          cpu: 600m
-          memory: 600Mi
+          cpu: 500m
+          memory: 712Mi
       env:
         - name: ALL_IMAGE_NAMES
           value: $(params.allImageNames)
