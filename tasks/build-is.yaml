@@ -37,6 +37,13 @@ spec:
   steps:
     - name: create-custom-resource
       image: image-registry.openshift-image-registry.svc:5000/vadym/sh-tools
+      resources:
+        limits:
+          cpu: 600m
+          memory: 600Mi
+        requests:
+          cpu: 600m
+          memory: 600Mi
       workingDir: $(workspaces.input.path)
       env:
         - name: ALL_IMAGE_NAMES
@@ -86,3 +93,20 @@ spec:
 
           ((idx=idx+1))
         done
+
+        # ls $(workspaces.input.path)
+
+        # function create_integration_server() {
+        #   envsubst < ${IS_MANIFEST_TEMPLATE} > ${DESTINATION_IS_MANIFEST}
+
+        #   for configuration in ${CONFIGURATIONS} ; do
+        #     config=$configuration yq e -i '.spec.configurations = (.spec.configurations // []) + env(config)' ${DESTINATION_IS_MANIFEST}
+        #   done
+        # }
+
+        # if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+        #   create_integration_server
+        # fi
+
+        # ls $(workspaces.input.path)
+        # cat $DESTINATION_IS_MANIFEST
