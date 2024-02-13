@@ -172,8 +172,8 @@ spec:
       workingDir: $(workspaces.source.path)
   volumes:
     - name: varlibcontainers
-      emptyDir: {}
-      # persistentVolumeClaim:
-      #   claimName: buildah-cache
+      persistentVolumeClaim:
+        claimName: buildah-cache
+      # emptyDir: {}
   workspaces:
     - name: source
