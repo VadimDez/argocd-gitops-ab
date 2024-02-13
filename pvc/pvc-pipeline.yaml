@@ -5,8 +5,7 @@ metadata:
   namespace: vadym
 spec:
   accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
+    - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
