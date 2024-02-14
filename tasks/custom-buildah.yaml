@@ -163,6 +163,7 @@ spec:
       # securityContext:
       #   privileged: true
       securityContext:
+        fsGroupChangePolicy: "OnRootMismatch"
         capabilities:
           add:
             - SETFCAP
