@@ -4,7 +4,7 @@ metadata:
   name: buildah-cache
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   volumeMode: Filesystem
   resources:
     requests:
