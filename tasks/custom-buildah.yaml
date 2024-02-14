@@ -163,9 +163,6 @@ spec:
       # securityContext:
       #   privileged: true
       securityContext:
-        runAsGroup: 10001
-        runAsNonRoot: true
-        runAsUser: 10001
         capabilities:
           add:
             - SETFCAP
