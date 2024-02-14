@@ -193,7 +193,7 @@ spec:
       taskRef:
         kind: Task
         name: custom-buildah
-      timeout: "3h0m0s"
+      timeout: "10h0m0s"
       workspaces:
         - name: source
           workspace: shared-workspace
