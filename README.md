@@ -98,3 +98,17 @@ oc exec vadym-nexusrepo-sonatype-nexus-7f7c79dfc-8t5jc -n vadym -- cat /nexus-da
 ### Git auth
 
 https://tekton.dev/docs/pipelines/auth/#configuring-ssh-auth-authentication-for-git
+
+### PN password
+
+secret: integration-admin-initial-temporary-credentials
+
+### Increase Tekton timeout
+
+Search for the `TektonConfig` resource, and add/modify yaml:
+
+```yaml
+spec:
+  pipeline:
+    default-timeout-minutes: 600
+```
