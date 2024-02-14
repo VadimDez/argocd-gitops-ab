@@ -163,11 +163,9 @@ spec:
       # securityContext:
       #   privileged: true
       securityContext:
-        fsGroup: 10001
         runAsGroup: 10001
         runAsNonRoot: true
         runAsUser: 10001
-        fsGroupChangePolicy: "OnRootMismatch"
         capabilities:
           add:
             - SETFCAP
